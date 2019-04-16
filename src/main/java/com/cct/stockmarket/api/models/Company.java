@@ -114,4 +114,10 @@ public class Company {
 		this.sharePrice = sharePrice;
 	}
 
+        @Override
+        public String toString() {
+            return "Company{" + "name=" + name + ", numberOfShares=" + numberOfShares + ", availableShares=" + availableShares + ", sharePrice=" + sharePrice + "}\n";
+        }
+        
+        
 }
