@@ -11,9 +11,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.cct.stockmarket.api.models.abstracts.AuditModel;
+
 @Entity
 @Table(name="companies")
-public class Company {
+public class Company extends AuditModel{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

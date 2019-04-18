@@ -9,9 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.cct.stockmarket.api.models.abstracts.AuditModel;
+
 @Entity
 @Table(name="investors")
-public class Investor {
+public class Investor extends AuditModel{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
