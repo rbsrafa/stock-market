@@ -33,9 +33,9 @@ public class StockMarketApplication implements CommandLineRunner{
     public void run(String... args) throws Exception {
         
         
-        List<Company> companiesList = new ArrayList<>(CompanyGenerator.generateCompanies(10));
+        List<Company> companiesList = new ArrayList<>(CompanyGenerator.generateCompanies(100));
         this.companies.saveAll(companiesList);
-        List<Investor> investorsList = new ArrayList<>(InvestorGenerator.generateInvestors(10));
+        List<Investor> investorsList = new ArrayList<>(InvestorGenerator.generateInvestors(100));
         this.investors.saveAll(investorsList);
         //companiesList = CompanyGenerator.generateCompanies();
     }

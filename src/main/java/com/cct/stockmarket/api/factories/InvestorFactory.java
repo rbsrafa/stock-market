@@ -6,6 +6,7 @@
 package com.cct.stockmarket.api.factories;
 
 import com.cct.stockmarket.api.models.Investor;
+import com.cct.stockmarket.api.models.SizeType;
 
 /**
  *
@@ -24,7 +25,17 @@ public class InvestorFactory {
             String firstName,
             String lastName
     ) {
+    	
+    	SizeType type;
+    	
+    	if(budget <= 4000) {
+    		type = SizeType.SMALL;
+    	}else if(budget > 4000 && budget <= 7000){
+    		type = SizeType.MEDIUM;
+    	}else{
+    		type = SizeType.LARGE;
+    	}
         
-        return new Investor(budget, firstName, lastName);
+        return new Investor(budget, firstName, lastName, type);
     }
 }

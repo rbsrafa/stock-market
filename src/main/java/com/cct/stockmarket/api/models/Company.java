@@ -2,6 +2,8 @@ package com.cct.stockmarket.api.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -30,18 +32,24 @@ public class Company {
 	@Column(nullable=false)
 	private Float sharePrice;
 	
+	@Column(nullable=false)
+	@Enumerated(EnumType.STRING)
+	private SizeType type;	
+	
 	public Company() {}
 	
 	public Company(
 		String name, 
 		Integer numberOfShares, 
 		Integer availableShares, 
-		Float sharePrice
+		Float sharePrice,
+		SizeType type
 	) {
 		this.name = name;
 		this.numberOfShares = numberOfShares;
 		this.availableShares = availableShares;
 		this.sharePrice = sharePrice;
+		this.type = type;
 	}
 
 	/**
