@@ -7,6 +7,8 @@ package com.cct.stockmarket.api.generators;
 
 import com.cct.stockmarket.api.models.Company;
 import com.cct.stockmarket.api.factories.CompanyFactory;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -49,6 +51,7 @@ public abstract class CompanyGenerator {
      * @return 
      */
     private static float randomNumberGenerator(int min, int max) {
-        return (float)(Math.random() * ((max - min) + 1)) + min;
+    	DecimalFormat df = new DecimalFormat("0.00");
+    	return Float.parseFloat(df.format((float)(Math.random() * ((max - min) + 1)) + min));
     }
 }
