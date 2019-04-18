@@ -102,9 +102,15 @@ public class Investor extends AuditModel{
 		this.lastName = lastName;
 	}
 
-    @Override
-    public String toString() {
-        return "Investor{" + " budget=" + budget + ", firstName=" + firstName + ", lastName=" + lastName + "}\n";
-    }
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Investor [id=" + id + ", budget=" + budget + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", type=" + type + ", createdAt=" + getCreatedAt() + ", updatedAt=" + getUpdatedAt() + "]";
+	}
+
+    
 
 }

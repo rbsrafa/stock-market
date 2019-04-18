@@ -124,10 +124,17 @@ public class Company extends AuditModel{
 		this.sharePrice = sharePrice;
 	}
 
-        @Override
-        public String toString() {
-            return "Company{" + "name=" + name + ", numberOfShares=" + numberOfShares + ", availableShares=" + availableShares + ", sharePrice=" + sharePrice + "}\n";
-        }
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name + ", numberOfShares=" + numberOfShares + ", availableShares="
+				+ availableShares + ", sharePrice=" + sharePrice + ", type=" + type + ", createdAt="
+				+ getCreatedAt() + ", updatedAt=" + getUpdatedAt() + "]";
+	}
+
+	
         
         
-}
+}	
