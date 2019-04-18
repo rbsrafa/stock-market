@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cct.stockmarket.api.generators;
+package com.cct.stockmarket.simulation.generators;
 
 import com.cct.stockmarket.api.models.Investor;
 import com.cct.stockmarket.api.factories.InvestorFactory;

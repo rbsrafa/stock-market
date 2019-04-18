@@ -1,7 +1,7 @@
 package com.cct.stockmarket;
 
-import com.cct.stockmarket.api.generators.CompanyGenerator;
-import com.cct.stockmarket.api.generators.InvestorGenerator;
+import com.cct.stockmarket.simulation.generators.CompanyGenerator;
+import com.cct.stockmarket.simulation.generators.InvestorGenerator;
 import com.cct.stockmarket.api.models.Company;
 import com.cct.stockmarket.api.models.Investor;
 import com.cct.stockmarket.api.models.Transaction;
@@ -84,6 +84,8 @@ public class StockMarketApplication implements CommandLineRunner{
         System.out.println("********");
         System.out.println(iOne);
         System.out.println("********");
+        
+        
     }
 
 }
