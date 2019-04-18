@@ -6,7 +6,7 @@
 package com.cct.stockmarket.simulation.generators;
 
 import com.cct.stockmarket.api.models.Company;
-import com.cct.stockmarket.api.factories.CompanyFactory;
+import com.cct.stockmarket.simulation.factories.CompanyFactory;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
