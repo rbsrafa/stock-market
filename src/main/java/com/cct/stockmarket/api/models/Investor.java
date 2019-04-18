@@ -92,4 +92,9 @@ public class Investor {
 		this.lastName = lastName;
 	}
 
+    @Override
+    public String toString() {
+        return "Investor{" + " budget=" + budget + ", firstName=" + firstName + ", lastName=" + lastName + "}\n";
+    }
+
 }
