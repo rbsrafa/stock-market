@@ -84,9 +84,12 @@ public class Simulator {
 		this.shares = new ArrayList<>();
 		this.shares.add(this.initialShareMax);
 		
+		// While there are available investors and
+		// available companies and the trade is still
+		// possible run the trading transactions
 		while(
-			availableInvestors.size() - 1 > 0 && 
-			availableCompanies.size() - 1 > 0 &&
+			availableInvestors.size() > 0 && 
+			availableCompanies.size() > 0 &&
 			tradeStillPossible
 		) {
 			// Update available entities for share trade
@@ -182,26 +185,13 @@ public class Simulator {
 				// Save company change to database
 				this.companies.save(c);
 			}
+			
+			
+			
 		}
-		
-		// App should stop: 
-		// If company availableShares < 1 OR
-		// If investors budget == 0 OR
-		// If investors budget < availableShares value
-		// DONE!!!!!
-		
-		// If a company sells 10 shares its price should double up
-		// DONE!!!!!
 		
 		// if 10 shares are sold and a company hasn't sold any
 		// its share should reduce in 2%
-
-		
-		// Investors can only buy 1 share per transaction
-		// DONE!!!!!
-		
-		// Investors must spread their investiment
-		// DONE!!!!!
 
 	}
 	
@@ -234,10 +224,12 @@ public class Simulator {
 		System.out.println("******************");
 		System.out.println("Max investor budget: " + this.budgets.get(this.budgets.size()-1));
 		System.out.println("Min share price: " + this.shares.get(0));
-		System.out.println("Budgets: " + this.budgets);
+		System.out.println("Possible investors budgets: " + this.budgets);
 		System.out.println("Budget list size: " + (this.budgets.size()-1));
 		System.out.println("Is min share value bigger than max investor budget: " + isMinShareBiggerThanMaxBudget);
 		System.out.println("Trade still possible: " + this.tradeStillPossible);
+		System.out.println("Companies that have sold shares: " + this.companySoldAmount);
+		System.out.println("Number of transactions: " + this.numberOfTransactions);
 		System.out.println("******************");
 	}
 	
