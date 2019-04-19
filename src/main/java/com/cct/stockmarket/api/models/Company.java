@@ -2,6 +2,8 @@ package com.cct.stockmarket.api.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,9 +11,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.cct.stockmarket.api.models.abstracts.AuditModel;
+
 @Entity
 @Table(name="companies")
-public class Company {
+public class Company extends AuditModel{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,18 +34,24 @@ public class Company {
 	@Column(nullable=false)
 	private Float sharePrice;
 	
+	@Column(nullable=false)
+	@Enumerated(EnumType.STRING)
+	private SizeType type;	
+	
 	public Company() {}
 	
 	public Company(
 		String name, 
 		Integer numberOfShares, 
 		Integer availableShares, 
-		Float sharePrice
+		Float sharePrice,
+		SizeType type
 	) {
 		this.name = name;
 		this.numberOfShares = numberOfShares;
 		this.availableShares = availableShares;
 		this.sharePrice = sharePrice;
+		this.type = type;
 	}
 
 	/**
@@ -114,10 +124,17 @@ public class Company {
 		this.sharePrice = sharePrice;
 	}
 
-        @Override
-        public String toString() {
-            return "Company{" + "name=" + name + ", numberOfShares=" + numberOfShares + ", availableShares=" + availableShares + ", sharePrice=" + sharePrice + "}\n";
-        }
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name + ", numberOfShares=" + numberOfShares + ", availableShares="
+				+ availableShares + ", sharePrice=" + sharePrice + ", type=" + type + ", createdAt="
+				+ getCreatedAt() + ", updatedAt=" + getUpdatedAt() + "]";
+	}
+
+	
         
         
-}
+}	

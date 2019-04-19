@@ -2,14 +2,18 @@ package com.cct.stockmarket.api.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.cct.stockmarket.api.models.abstracts.AuditModel;
+
 @Entity
 @Table(name="investors")
-public class Investor {
+public class Investor extends AuditModel{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,16 +28,22 @@ public class Investor {
 	@Column(nullable=false, length=20)
 	private String lastName;
 	
+	@Column(nullable=false)
+	@Enumerated(EnumType.STRING)
+	private SizeType type;
+	
 	public Investor() {}
 	
 	public Investor(
 		Float budget,
 		String firstName,
-		String lastName
+		String lastName,
+		SizeType type
 	) {
 		this.budget = budget;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.type = type;
 	}
 
 	/**
@@ -92,9 +102,15 @@ public class Investor {
 		this.lastName = lastName;
 	}
 
-    @Override
-    public String toString() {
-        return "Investor{" + " budget=" + budget + ", firstName=" + firstName + ", lastName=" + lastName + "}\n";
-    }
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Investor [id=" + id + ", budget=" + budget + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", type=" + type + ", createdAt=" + getCreatedAt() + ", updatedAt=" + getUpdatedAt() + "]";
+	}
+
+    
 
 }

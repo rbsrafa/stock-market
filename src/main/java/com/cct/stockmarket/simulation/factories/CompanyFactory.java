@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cct.stockmarket.api.factories;
+package com.cct.stockmarket.simulation.factories;
 
 import com.cct.stockmarket.api.models.Company;
+import com.cct.stockmarket.api.models.SizeType;
 
 /**
  *
@@ -26,7 +27,37 @@ public class CompanyFactory {
             Integer availableShares, 
             Float sharePrice
     ) {
+    	
+    	SizeType type;
+    	
+    	if(numberOfShares * sharePrice <= 30000) {
+    		type = SizeType.SMALL;
+    	}else if(numberOfShares * sharePrice > 30000 && numberOfShares * sharePrice <= 80000){
+    		type = SizeType.MEDIUM;
+    	}else{
+    		type = SizeType.LARGE;
+    	}
         
-        return new Company(name, numberOfShares, availableShares, sharePrice);
+        return new Company(name, numberOfShares, availableShares, sharePrice, type);
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
