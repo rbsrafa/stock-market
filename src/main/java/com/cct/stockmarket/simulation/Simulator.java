@@ -208,6 +208,9 @@ public class Simulator {
 					company.setSharePrice(company.getSharePrice() * 0.98f);
 					System.out.println("Lost 2% of value: " + company);
 				});
+				
+				// Save changed companies in database
+				this.companies.saveAll(haveNotSold);
 			}
 						
 		}
