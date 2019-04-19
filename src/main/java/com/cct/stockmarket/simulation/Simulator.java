@@ -115,13 +115,15 @@ public class Simulator {
 			isMinShareBiggerThanMaxBudget = 
 				this.shares.get(0) >
 				this.budgets.get(this.budgets.size()-1);
+				
+			// Print trading info to console
+			this.printTradingState();
 			
 			// If min share price is bigger than the max 
 			// budget value set trade still possible to false			   
 			if(isMinShareBiggerThanMaxBudget) {this.tradeStillPossible = false;}
 			
-			// Print trading info to console
-			this.printTradingState();
+			
 			
 		}
 		
