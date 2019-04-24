@@ -1,11 +1,12 @@
 package com.cct.stockmarket;
 
 import com.cct.stockmarket.simulation.Simulator;
+import com.cct.stockmarket.simulation.generators.CompanyGenerator;
+import com.cct.stockmarket.simulation.generators.InvestorGenerator;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
@@ -14,24 +15,26 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  */
 @SpringBootApplication
 @EnableJpaAuditing
-public class StockMarketApplication implements CommandLineRunner{
-
-	@Autowired
-	Simulator simulator;
-    
-    /* (non-Javadoc)
-     * @see org.springframework.boot.CommandLineRunner#run(java.lang.String[])
-     */
-    @Override   
-    public void run(String... args) throws Exception {
-    	simulator.runTradingDay();
-    }
+public class StockMarketApplication {
     
     /**
      * @param args
      */
     public static void main(String[] args) {
-    	SpringApplication.run(StockMarketApplication.class, args);
+    	ApplicationContext context = SpringApplication.run(StockMarketApplication.class, args);
+    	
+    	int numberOfInvestors = 5;
+    	int numberOfCompanies = 5;
+    	
+    	Simulator simulator = context
+			.getBean(
+				Simulator.class, 
+				InvestorGenerator.generateInvestors(numberOfInvestors), 
+				CompanyGenerator.generateCompanies(numberOfCompanies)
+			);
+    	
+    	simulator.runTradingDay();
+    	
     }
 
 }

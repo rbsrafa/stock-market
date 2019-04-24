@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.cct.stockmarket.api.models.Company;
@@ -15,8 +16,6 @@ import com.cct.stockmarket.api.models.Transaction;
 import com.cct.stockmarket.api.repositories.CompanyRepository;
 import com.cct.stockmarket.api.repositories.InvestorRepository;
 import com.cct.stockmarket.api.repositories.TransactionRepository;
-import com.cct.stockmarket.simulation.generators.CompanyGenerator;
-import com.cct.stockmarket.simulation.generators.InvestorGenerator;
 
 /**
  * 
@@ -24,6 +23,7 @@ import com.cct.stockmarket.simulation.generators.InvestorGenerator;
  *
  */
 @Component
+@Scope("prototype")
 public class Simulator {
 	
 	@Autowired
@@ -34,9 +34,6 @@ public class Simulator {
 	
 	@Autowired
 	TransactionRepository transactions;
-	
-	private Integer numberOfCompanies;
-	private Integer numberOfInvestors;
 	
 	private Integer numberOfTransactions;
 	
@@ -52,31 +49,54 @@ public class Simulator {
 	boolean tradeStillPossible;
 	boolean isMinShareBiggerThanMaxBudget;
 	
+	List<Investor> investorList; 
+	List<Company> companyList;
+	
+	/**
+	 * Create a Simulator with the provided
+	 * list of investors and companies
+	 * @param investorList
+	 * @param companyList
+	 */
+	@Autowired
+	public Simulator(
+		List<Investor> investorList, 
+		List<Company> companyList
+	) {
+		this.investorList = investorList;
+		this.companyList = companyList;
+	}
+	
 	/**
 	 * Create a default Simulator
 	 */
-    public Simulator() {
-    	numberOfCompanies = 10;
-    	numberOfInvestors = 10;
-    	numberOfTransactions = 0;
-    	initialShareMax = 100f;
-    	tradeStillPossible = true;
-    	companySoldAmount = new HashMap<>();
-    }
+    public Simulator() {}
 	
     /**
      * Runs a simulation trading day
      */
 	public void runTradingDay() {
+		this.setupTradingDay();
+		this.startTradingDay();
+	}
+	
+	/**
+	 * Setup the trading day simulation
+	 */
+	private void setupTradingDay() {
+    	numberOfTransactions = 0;
+    	initialShareMax = 100f;
+    	tradeStillPossible = true;
+    	companySoldAmount = new HashMap<>();
 		
 		// Delete all persisted rows in database
 		this.clearTables();
 		
-		// Create random companies
-		this.createCompanies();
+		// Persist the provided companies on database
+		this.companies.saveAll(this.companyList);
 		
-		// Create random investors
-		this.createInvestors();
+		// Persist the provided investors on database
+		this.investors.saveAll(this.investorList);
 		
 		// Set available entities for trading
 		this.setAvailableTradingEntities(0f, 0);
@@ -84,7 +104,12 @@ public class Simulator {
 		// Set shares maximum value
 		this.shares = new ArrayList<>();
 		this.shares.add(this.initialShareMax);
-		
+	}
+	
+	/*
+	 * Start the trading day simulation
+	 */
+	private void startTradingDay() {
 		// While there are available investors and
 		// available companies and the trade is still
 		// possible run the trading transactions
@@ -124,7 +149,6 @@ public class Simulator {
 			// Print trading info to console
 			this.printTradingState();
 		}
-		
 	}
 	
 	/**
@@ -247,7 +271,7 @@ public class Simulator {
 		System.out.println("Number of transactions: " + this.numberOfTransactions);
 		System.out.println("Max investor budget: " + this.budgets.get(this.budgets.size()-1));
 		System.out.println("Min share price: " + this.shares.get(0));
-		System.out.println("Number of companies that have not sold any share: " + (this.numberOfCompanies - this.companySoldAmount.size()));
+		System.out.println("Number of companies that have not sold any share: " + (this.investorList.size() - this.companySoldAmount.size()));
 		System.out.println("Companies that have sold shares: " + this.companySoldAmount);
 		System.out.println("Possible investors budgets: " + this.budgets);
 		System.out.println("Budget list size: " + (this.budgets.size()-1));
@@ -285,34 +309,5 @@ public class Simulator {
 	private int random(int min, int max) {
     	return (int)(Math.random() * ((max - min) + 1) + min);
     }
-	
-	/**
-	 * Creates companies based on numberOfCompanies property
-	 */
-	private void createCompanies(){
-		// Create a list of companies
-		@SuppressWarnings("unchecked")
-		List<Company> companyList = new ArrayList<>(
-			CompanyGenerator.generateCompanies(
-				this.numberOfCompanies
-			)
-		);
-		// Persist companies on database
-		this.companies.saveAll(companyList);
-	}
-	
-	/**
-	 * Creates investors based on numberOfInvestors property
-	 */
-	private void createInvestors() {
-		// Create a list of investors
-		@SuppressWarnings("unchecked")
-		List<Investor> investorList = new ArrayList<>(
-			InvestorGenerator.generateInvestors(
-				this.numberOfInvestors)
-		);
-		// Persist investors on database
-		this.investors.saveAll(investorList);
-	}
 	
 }
