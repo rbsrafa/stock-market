@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -84,9 +85,12 @@ public class Simulator {
 		this.shares = new ArrayList<>();
 		this.shares.add(this.initialShareMax);
 		
+		// While there are available investors and
+		// available companies and the trade is still
+		// possible run the trading transactions
 		while(
-			availableInvestors.size() - 1 > 0 && 
-			availableCompanies.size() - 1 > 0 &&
+			availableInvestors.size() > 0 && 
+			availableCompanies.size() > 0 &&
 			tradeStillPossible
 		) {
 			// Update available entities for share trade
@@ -119,7 +123,6 @@ public class Simulator {
 			
 			// Print trading info to console
 			this.printTradingState();
-			
 		}
 		
 	}
@@ -182,27 +185,36 @@ public class Simulator {
 				// Save company change to database
 				this.companies.save(c);
 			}
+			
+			// If the transactions made are multiple of 10
+			// check which companies have not sold any share
+			// and reduce their share value by 2%
+			if(this.numberOfTransactions % 10 == 0) {
+				// Get all companies in the simulation
+				List<Company> allCompanies = this.companies.findAll();
+				
+				// For each company remove from the list the 
+				// one that has not sold any share
+				allCompanies.removeIf(company -> {
+					Set<Long> keys = this.companySoldAmount.keySet();
+					return keys.contains(company.getId());
+				});
+				// Create a list with non sold shares companies
+				List<Company> haveNotSold = allCompanies;
+				
+				// for any company that hasn't sold a share decrease
+				// its share value by 2%
+				haveNotSold.forEach(company -> {
+					company.setSharePrice(company.getSharePrice() * 0.98f);
+					System.out.println("Lost 2% of value: " + company);
+				});
+				
+				// Save changed companies in database
+				this.companies.saveAll(haveNotSold);
+			}
+						
 		}
 		
-		// App should stop: 
-		// If company availableShares < 1 OR
-		// If investors budget == 0 OR
-		// If investors budget < availableShares value
-		// DONE!!!!!
-		
-		// If a company sells 10 shares its price should double up
-		// DONE!!!!!
-		
-		// if 10 shares are sold and a company hasn't sold any
-		// its share should reduce in 2%
-
-		
-		// Investors can only buy 1 share per transaction
-		// DONE!!!!!
-		
-		// Investors must spread their investiment
-		// DONE!!!!!
-
 	}
 	
 	private void updateBudgetList() {
@@ -232,9 +244,12 @@ public class Simulator {
 	 */
 	private void printTradingState() {
 		System.out.println("******************");
+		System.out.println("Number of transactions: " + this.numberOfTransactions);
 		System.out.println("Max investor budget: " + this.budgets.get(this.budgets.size()-1));
 		System.out.println("Min share price: " + this.shares.get(0));
-		System.out.println("Budgets: " + this.budgets);
+		System.out.println("Number of companies that have not sold any share: " + (this.numberOfCompanies - this.companySoldAmount.size()));
+		System.out.println("Companies that have sold shares: " + this.companySoldAmount);
+		System.out.println("Possible investors budgets: " + this.budgets);
 		System.out.println("Budget list size: " + (this.budgets.size()-1));
 		System.out.println("Is min share value bigger than max investor budget: " + isMinShareBiggerThanMaxBudget);
 		System.out.println("Trade still possible: " + this.tradeStillPossible);

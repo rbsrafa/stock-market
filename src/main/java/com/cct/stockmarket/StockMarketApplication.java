@@ -19,7 +19,6 @@ public class StockMarketApplication implements CommandLineRunner{
 	@Autowired
 	Simulator simulator;
     
-
     /* (non-Javadoc)
      * @see org.springframework.boot.CommandLineRunner#run(java.lang.String[])
      */
@@ -27,7 +26,6 @@ public class StockMarketApplication implements CommandLineRunner{
     public void run(String... args) throws Exception {
     	simulator.runTradingDay();
     }
-    
     
     /**
      * @param args
