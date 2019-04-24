@@ -22,11 +22,11 @@ public abstract class InvestorGenerator {
      * @param n number of investors to be generated
      * @return 
      */
-    public static ArrayList generateInvestors(int n){
+    public static ArrayList<Investor> generateInvestors(int n, float min, float max){
         ArrayList<Investor> investorsList = new ArrayList<>();
         int numberOfShares[] = new int[n];
-        int maxBudget = 10000;
-        int minBudget = 1000;
+        float maxBudget = max;
+        float minBudget = min;
         
         for(int i = 0; i < n; i++){
             numberOfShares[i] = (int)randomNumberGenerator(maxBudget, minBudget);
@@ -47,7 +47,7 @@ public abstract class InvestorGenerator {
      * @param max maximum value for the random number generator
      * @return 
      */
-    private static float randomNumberGenerator(int min, int max) {
+    private static float randomNumberGenerator(float min, float max) {
     	DecimalFormat df = new DecimalFormat("0.00");
     	return Float.parseFloat(df.format((float)(Math.random() * ((max - min) + 1)) + min));
     }

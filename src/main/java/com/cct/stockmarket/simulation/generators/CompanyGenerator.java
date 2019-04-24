@@ -22,13 +22,12 @@ public abstract class CompanyGenerator {
      * @param n number of companies to be generated
      * @return 
      */
-    public static ArrayList generateCompanies(int n){
+    public static ArrayList<Company> generateCompanies(
+    		int n, int maxShare, int minShare, 
+    		float maxPrice, float minPrice
+    	){
         ArrayList<Company> companiesList = new ArrayList<>();
         int numberOfShares[] = new int[n];
-        int maxShare = 1000;
-        int minShare = 500;
-        int maxPrice = 100;
-        int minPrice = 10;
         
         for(int i = 0; i < n; i++){
             numberOfShares[i] = (int)randomNumberGenerator(minShare, maxShare);
@@ -50,7 +49,7 @@ public abstract class CompanyGenerator {
      * @param max maximum value for the random number generator
      * @return 
      */
-    private static float randomNumberGenerator(int min, int max) {
+    private static float randomNumberGenerator(float min, float max) {
     	DecimalFormat df = new DecimalFormat("0.00");
     	return Float.parseFloat(df.format((float)(Math.random() * ((max - min) + 1)) + min));
     }

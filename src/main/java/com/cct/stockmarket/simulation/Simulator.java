@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.cct.stockmarket.api.models.Company;
 import com.cct.stockmarket.api.models.Investor;
 import com.cct.stockmarket.api.models.Transaction;
+import com.cct.stockmarket.api.payloads.SimulationResponse;
 import com.cct.stockmarket.api.repositories.CompanyRepository;
 import com.cct.stockmarket.api.repositories.InvestorRepository;
 import com.cct.stockmarket.api.repositories.TransactionRepository;
@@ -280,6 +281,19 @@ public class Simulator {
 		System.out.println("******************");
 	}
 	
+	public SimulationResponse getResults() {
+		SimulationResponse results = new SimulationResponse(
+			this.numberOfTransactions,
+			this.budgets.get(this.budgets.size()-1),
+			this.shares.get(0),
+			this.investorList.size() - this.companySoldAmount.size(),
+			this.companySoldAmount,	
+			this.budgets
+		);
+		
+		return results;
+	}
+	
 	/**
 	 * Set available entities to perform a share trade
 	 * @param budget
@@ -309,5 +323,210 @@ public class Simulator {
 	private int random(int min, int max) {
     	return (int)(Math.random() * ((max - min) + 1) + min);
     }
+	
+	
+	
+	
+	
+	
+	// Getters and Setters	
+
+	/**
+	 * @return the companies
+	 */
+	public CompanyRepository getCompanies() {
+		return companies;
+	}
+
+	/**
+	 * @param companies the companies to set
+	 */
+	public void setCompanies(CompanyRepository companies) {
+		this.companies = companies;
+	}
+
+	/**
+	 * @return the investors
+	 */
+	public InvestorRepository getInvestors() {
+		return investors;
+	}
+
+	/**
+	 * @param investors the investors to set
+	 */
+	public void setInvestors(InvestorRepository investors) {
+		this.investors = investors;
+	}
+
+	/**
+	 * @return the transactions
+	 */
+	public TransactionRepository getTransactions() {
+		return transactions;
+	}
+
+	/**
+	 * @param transactions the transactions to set
+	 */
+	public void setTransactions(TransactionRepository transactions) {
+		this.transactions = transactions;
+	}
+
+	/**
+	 * @return the numberOfTransactions
+	 */
+	public Integer getNumberOfTransactions() {
+		return numberOfTransactions;
+	}
+
+	/**
+	 * @param numberOfTransactions the numberOfTransactions to set
+	 */
+	public void setNumberOfTransactions(Integer numberOfTransactions) {
+		this.numberOfTransactions = numberOfTransactions;
+	}
+
+	/**
+	 * @return the initialShareMax
+	 */
+	public Float getInitialShareMax() {
+		return initialShareMax;
+	}
+
+	/**
+	 * @param initialShareMax the initialShareMax to set
+	 */
+	public void setInitialShareMax(Float initialShareMax) {
+		this.initialShareMax = initialShareMax;
+	}
+
+	/**
+	 * @return the companySoldAmount
+	 */
+	public HashMap<Long, Integer> getCompanySoldAmount() {
+		return companySoldAmount;
+	}
+
+	/**
+	 * @param companySoldAmount the companySoldAmount to set
+	 */
+	public void setCompanySoldAmount(HashMap<Long, Integer> companySoldAmount) {
+		this.companySoldAmount = companySoldAmount;
+	}
+
+	/**
+	 * @return the availableInvestors
+	 */
+	public List<Investor> getAvailableInvestors() {
+		return availableInvestors;
+	}
+
+	/**
+	 * @param availableInvestors the availableInvestors to set
+	 */
+	public void setAvailableInvestors(List<Investor> availableInvestors) {
+		this.availableInvestors = availableInvestors;
+	}
+
+	/**
+	 * @return the availableCompanies
+	 */
+	public List<Company> getAvailableCompanies() {
+		return availableCompanies;
+	}
+
+	/**
+	 * @param availableCompanies the availableCompanies to set
+	 */
+	public void setAvailableCompanies(List<Company> availableCompanies) {
+		this.availableCompanies = availableCompanies;
+	}
+
+	/**
+	 * @return the budgets
+	 */
+	public List<Float> getBudgets() {
+		return budgets;
+	}
+
+	/**
+	 * @param budgets the budgets to set
+	 */
+	public void setBudgets(List<Float> budgets) {
+		this.budgets = budgets;
+	}
+
+	/**
+	 * @return the shares
+	 */
+	public List<Float> getShares() {
+		return shares;
+	}
+
+	/**
+	 * @param shares the shares to set
+	 */
+	public void setShares(List<Float> shares) {
+		this.shares = shares;
+	}
+
+	/**
+	 * @return the tradeStillPossible
+	 */
+	public boolean isTradeStillPossible() {
+		return tradeStillPossible;
+	}
+
+	/**
+	 * @param tradeStillPossible the tradeStillPossible to set
+	 */
+	public void setTradeStillPossible(boolean tradeStillPossible) {
+		this.tradeStillPossible = tradeStillPossible;
+	}
+
+	/**
+	 * @return the isMinShareBiggerThanMaxBudget
+	 */
+	public boolean isMinShareBiggerThanMaxBudget() {
+		return isMinShareBiggerThanMaxBudget;
+	}
+
+	/**
+	 * @param isMinShareBiggerThanMaxBudget the isMinShareBiggerThanMaxBudget to set
+	 */
+	public void setMinShareBiggerThanMaxBudget(boolean isMinShareBiggerThanMaxBudget) {
+		this.isMinShareBiggerThanMaxBudget = isMinShareBiggerThanMaxBudget;
+	}
+
+	/**
+	 * @return the investorList
+	 */
+	public List<Investor> getInvestorList() {
+		return investorList;
+	}
+
+	/**
+	 * @param investorList the investorList to set
+	 */
+	public void setInvestorList(List<Investor> investorList) {
+		this.investorList = investorList;
+	}
+
+	/**
+	 * @return the companyList
+	 */
+	public List<Company> getCompanyList() {
+		return companyList;
+	}
+
+	/**
+	 * @param companyList the companyList to set
+	 */
+	public void setCompanyList(List<Company> companyList) {
+		this.companyList = companyList;
+	}
+	
+	
 	
 }
