@@ -151,7 +151,7 @@ public class Simulator {
 			this.printTradingState();
 		}
 	}
-	
+
 	/**
 	 * Makes investors x companies transactions
 	 */
