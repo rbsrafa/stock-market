@@ -116,7 +116,7 @@ export default class SimulationSettings extends Component<Props, State> {
               id="maxSharePrice"
               placeholder="100" />
           </div>
-          <label onClick={() => this.props.settings(this.state)} className="btn btn-sm btn-primary">Run</label>
+          <label onClick={() => this.props.settings(this.state)} className="btn btn-sm btn-primary mt-2">Run</label>
         </form>
       </div>
     )

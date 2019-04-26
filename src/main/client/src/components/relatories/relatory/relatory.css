@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+.rel:hover{
+  color: black;
+}
+
 .border{
   border-radius: 5px !important;
   padding: 10px;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { runSimulation, getSimulations } from './services/simulationService';
 
 import './App.css';
 import Navbar from './components/navbar/navbar';
@@ -43,13 +44,13 @@ export default class App extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    const simulations = await this.getSimulations(); 
-    if(simulations.length > 0){
-      this.setState({simulations});
-    }   
+    const simulations = await getSimulations();
+    if (simulations.length > 0) {
+      this.setState({ simulations });
+    }
   }
 
-  private _handleRunButton(settings: any){
+  private _handleRunButton(settings: any) {
     this._runSimulation(settings);
   }
 
@@ -65,27 +66,7 @@ export default class App extends Component<Props, State> {
                 settings={(settings: any) => this._handleRunButton(settings)}
               />
             </div>
-            <div className="col-8 col-sm-9 col-md-9 col-lg-10  p-1">
-              {this.state.simulations ?
-                (
-                  <div className='container'>
-                    {this.state.simulations ?
-                      (
-                        this.state.simulations.map((s:any, i:any) => {
-                          return <SimulationView simulation={this.state.simulations[i]} key={i} />
-                        })
-                      ) : <div></div>
-                    }
-                  </div>
-                ) :
-                (
-                  <div className='container'>
-                    <h5 className='text-center'>No Simulations Stored</h5>
-                    <p>Please run simulations to see their results here.</p>
-                  </div>
-                )
-              }
-            </div>
+            {this._renderSimulations()}
           </div>
         </div>
       </React.Fragment>
@@ -94,46 +75,37 @@ export default class App extends Component<Props, State> {
   }
 
   private async _runSimulation(settings: any) {
-    let request = {
-      investorsQuantity: settings.numberOfInvestors,
-      companiesQuantity: settings.numberOfCompanies,
-      maxBudget: settings.maxInvestorBudget,
-      minBudget: settings.minInvestorBudget,
-      maxSharePrice: settings.maxSharePrice,
-      minSharePrice: settings.minSharePrice,
-      maxAmmountShares: settings.maxShareNumber,
-      minAmmountShares: settings.minShareNumber
+    await runSimulation(settings);
+
+    const simulations = await getSimulations();
+    if (simulations.length > 0) {
+      this.setState({ simulations });
     }
-    
-    const res = await fetch(
-      '/api/simulation/run',
-      {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(request)
-      }
-    );
-    const simulations = await this.getSimulations(); 
-    if(simulations.length > 0){
-      this.setState({simulations});
-    }
-    console.log(res);
   }
 
-  private async getSimulations() {
-    const res = await fetch(
-      '/api/simulation/relatories',
-      {
-        method: 'GET',
-        headers: {
-          "Content-Type": "application/json"
+  private _renderSimulations() {
+    return (
+      <div className="col-8 col-sm-9 col-md-9 col-lg-10  p-1">
+        {this.state.simulations ?
+          (
+            <div className='container'>
+              {this.state.simulations ?
+                (
+                  this.state.simulations.map((s: any, i: any) => {
+                    return <SimulationView simulation={this.state.simulations[i]} key={i} />
+                  })
+                ) : <div></div>
+              }
+            </div>
+          ) : (
+            <div className='container'>
+              <h5 className='text-center'>No Simulations Stored</h5>
+              <p className='text-center'>Please run simulations to see their results here.</p>
+            </div>
+          )
         }
-      }
-    );
-    return await res.json();
-    
+      </div>
+    )
   }
 
 }

@@ -21,9 +21,8 @@ export default class SimulationView extends Component<Props, State> {
 
   render() {
     const className = ` btn btn-lg btn${this.state.showRelatories ? '' : '-outline'}-dark w-100 hover`;
-
-
     const simulation = this.props.simulation;
+
     return (
       <div className='mb-2'>
           <div
@@ -43,5 +42,6 @@ export default class SimulationView extends Component<Props, State> {
 
       </div>
     )
+    
   }
 }
