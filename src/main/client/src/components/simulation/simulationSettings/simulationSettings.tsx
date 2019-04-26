@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './simulation.css';
+import './simulationSettings.css';
 
 interface Props {
   settings: Function;
@@ -16,7 +16,7 @@ interface State {
   maxSharePrice: number | null;
 }
 
-export default class Simulation extends Component<Props, State> {
+export default class SimulationSettings extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
@@ -41,7 +41,6 @@ export default class Simulation extends Component<Props, State> {
     let state = this.state;
     (state as any)[e.target.id] = e.target.value;
     this.setState(state);
-    console.log(this.state);
   }
 
   render() {
