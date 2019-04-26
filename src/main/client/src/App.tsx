@@ -43,25 +43,14 @@ export default class App extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    const simulations = await this.getSimulations();
-    console.log(simulations);
-    
-    this.setState({simulations});
+    const simulations = await this.getSimulations(); 
+    if(simulations.length > 0){
+      this.setState({simulations});
+    }   
   }
 
-  async componentDidUpdate() {
-    if (
-      this.state.settings.numberOfInvestors &&
-      this.state.settings.minInvestorBudget &&
-      this.state.settings.maxInvestorBudget &&
-      this.state.settings.numberOfCompanies &&
-      this.state.settings.minShareNumber &&
-      this.state.settings.maxShareNumber &&
-      this.state.settings.minSharePrice &&
-      this.state.settings.maxSharePrice
-    ) {
-      this._runSimulation()
-    }
+  private _handleRunButton(settings: any){
+    this._runSimulation(settings);
   }
 
   render() {
@@ -73,7 +62,7 @@ export default class App extends Component<Props, State> {
           <div className="row hei">
             <div className="col-4 col-sm-3 col-md-3 col-lg-2  p-1">
               <SimulationSettings
-                settings={(settings: any) => this.setState({ settings })}
+                settings={(settings: any) => this._handleRunButton(settings)}
               />
             </div>
             <div className="col-8 col-sm-9 col-md-9 col-lg-10  p-1">
@@ -85,10 +74,8 @@ export default class App extends Component<Props, State> {
                         this.state.simulations.map((s:any, i:any) => {
                           return <SimulationView simulation={this.state.simulations[i]} key={i} />
                         })
-                      ) :
-                      <div></div>
+                      ) : <div></div>
                     }
-                    
                   </div>
                 ) :
                 (
@@ -106,20 +93,18 @@ export default class App extends Component<Props, State> {
 
   }
 
-
-  private async _runSimulation() {
-    let state = this.state.settings;
+  private async _runSimulation(settings: any) {
     let request = {
-      investorsQuantity: state.numberOfInvestors,
-      companiesQuantity: state.numberOfCompanies,
-      maxBudget: state.maxInvestorBudget,
-      minBudget: state.minInvestorBudget,
-      maxSharePrice: state.maxSharePrice,
-      minSharePrice: state.minSharePrice,
-      maxAmmountShares: state.maxShareNumber,
-      minAmmountShares: state.minShareNumber
+      investorsQuantity: settings.numberOfInvestors,
+      companiesQuantity: settings.numberOfCompanies,
+      maxBudget: settings.maxInvestorBudget,
+      minBudget: settings.minInvestorBudget,
+      maxSharePrice: settings.maxSharePrice,
+      minSharePrice: settings.minSharePrice,
+      maxAmmountShares: settings.maxShareNumber,
+      minAmmountShares: settings.minShareNumber
     }
-
+    
     const res = await fetch(
       '/api/simulation/run',
       {
@@ -130,6 +115,10 @@ export default class App extends Component<Props, State> {
         body: JSON.stringify(request)
       }
     );
+    const simulations = await this.getSimulations(); 
+    if(simulations.length > 0){
+      this.setState({simulations});
+    }
     console.log(res);
   }
 
@@ -144,6 +133,7 @@ export default class App extends Component<Props, State> {
       }
     );
     return await res.json();
+    
   }
 
 }

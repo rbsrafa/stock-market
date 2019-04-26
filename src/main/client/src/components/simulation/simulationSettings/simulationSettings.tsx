@@ -21,20 +21,16 @@ export default class SimulationSettings extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      numberOfInvestors: null,
-      minInvestorBudget: null,
-      maxInvestorBudget: null,
-      numberOfCompanies: null,
-      minShareNumber: null,
-      maxShareNumber: null,
-      minSharePrice: null,
-      maxSharePrice: null
+      numberOfInvestors: 100,
+      minInvestorBudget: 1000,
+      maxInvestorBudget: 10000,
+      numberOfCompanies: 100,
+      minShareNumber: 500,
+      maxShareNumber: 1000,
+      minSharePrice: 10,
+      maxSharePrice: 100
     }
 
-  }
-
-  private _handleRunSimulation() {
-    this.props.settings(this.state);
   }
 
   private _updateState(e: any) {
@@ -55,7 +51,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="numberOfInvestors"
-              placeholder="" />
+              placeholder="100" />
           </div>
           <div className="form-group">
             <label htmlFor="minInvestorBudget">Min Investor Budget</label>
@@ -64,7 +60,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="minInvestorBudget"
-              placeholder="" />
+              placeholder="1000" />
           </div>
           <div className="form-group">
             <label htmlFor="maxInvestorBudget">Max Investor Budget</label>
@@ -73,7 +69,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="maxInvestorBudget"
-              placeholder="" />
+              placeholder="10000" />
           </div>
           <div className="form-group">
             <label htmlFor="numberOfCompanies">Number of Companies</label>
@@ -82,7 +78,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="numberOfCompanies"
-              placeholder="" />
+              placeholder="100" />
           </div>
           <div className="form-group">
             <label htmlFor="minShareNumber">Min Number of Shares</label>
@@ -91,7 +87,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="minShareNumber"
-              placeholder="" />
+              placeholder="500" />
           </div>
           <div className="form-group">
             <label htmlFor="maxShareNumber">Max Number of Shares</label>
@@ -100,7 +96,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="maxShareNumber"
-              placeholder="" />
+              placeholder="1000" />
           </div>
           <div className="form-group">
             <label htmlFor="minSharePrice">Min Share Price</label>
@@ -109,7 +105,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="minSharePrice"
-              placeholder="" />
+              placeholder="10" />
           </div>
           <div className="form-group">
             <label htmlFor="maxSharePrice">Max Share Price</label>
@@ -118,7 +114,7 @@ export default class SimulationSettings extends Component<Props, State> {
               type="text"
               className="form-control"
               id="maxSharePrice"
-              placeholder="" />
+              placeholder="100" />
           </div>
           <label onClick={() => this.props.settings(this.state)} className="btn btn-sm btn-primary">Run</label>
         </form>

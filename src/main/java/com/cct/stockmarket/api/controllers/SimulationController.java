@@ -53,6 +53,8 @@ public class SimulationController {
 	Integer lowestNumberOfShares = 10000;
 	List<RelatoryResponse> simulationRelatories = new ArrayList();
 	
+	
+	
 	@PostMapping("/run")
 	public SimulationResponse runTradingDay(
 		@Valid @RequestBody SimulationRequest settings
