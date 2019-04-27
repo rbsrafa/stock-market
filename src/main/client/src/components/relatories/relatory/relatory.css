@@ -10,3 +10,11 @@
   border-radius: 5px !important;
   padding: 10px;
 }
+
+.bg-white{
+  background: white;
+}
+
+.bg-white:hover{
+  background: rgb(240, 234, 234) !important;
+}
