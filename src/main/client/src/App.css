@@ -16,6 +16,10 @@
   border-color: rgb(73, 80, 87) !important;
 }
 
+.margin{
+  margin-top: 45vh;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
