@@ -1,51 +1,71 @@
 package com.cct.stockmarket.api.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import com.cct.stockmarket.api.models.abstracts.AuditModel;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-@Entity
-@Table(name="transactions")
+//@Entity
+//@Table(name="transactions")
 public class Transaction extends AuditModel{
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private static Long counter = 0L;
 	
-	@Column(nullable=false)
+//	@Id
+	private final Long id;
+	
+//	@Column(nullable=false)
 	private Float value;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="investor_id", nullable=false)
-	@OnDelete(action=OnDeleteAction.CASCADE)
+//	@ManyToOne(fetch=FetchType.LAZY)
+//	@JoinColumn(name="investor_id", nullable=false)
+//	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Investor investor;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="company_id", nullable=false)
-	@OnDelete(action=OnDeleteAction.CASCADE)
+//	@ManyToOne(fetch=FetchType.LAZY)
+//	@JoinColumn(name="company_id", nullable=false)
+//	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Company company;
 	
-	public Transaction() {}
+	public Transaction() {
+		this.id = ++counter;
+	}
 	
 	public Transaction(
 		Investor investor, 
 		Company company, 
 		Float value
 	) {
+		this.id = ++counter;
 		this.investor = investor;
 		this.company = company;
 		this.value = value;
+	}
+
+	/**
+	 * @return the investor
+	 */
+	public Investor getInvestor() {
+		return investor;
+	}
+
+	/**
+	 * @param investor the investor to set
+	 */
+	public void setInvestor(Investor investor) {
+		this.investor = investor;
+	}
+
+	/**
+	 * @return the company
+	 */
+	public Company getCompany() {
+		return company;
+	}
+
+	/**
+	 * @param company the company to set
+	 */
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 	/**
@@ -53,13 +73,6 @@ public class Transaction extends AuditModel{
 	 */
 	public Long getId() {
 		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**

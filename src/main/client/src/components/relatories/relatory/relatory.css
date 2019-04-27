@@ -1,0 +1,20 @@
+.hover:hover{
+  cursor: pointer;
+}
+
+.rel:hover{
+  color: black;
+}
+
+.border{
+  border-radius: 5px !important;
+  padding: 10px;
+}
+
+.bg-white{
+  background: white;
+}
+
+.bg-white:hover{
+  background: rgb(240, 234, 234) !important;
+}

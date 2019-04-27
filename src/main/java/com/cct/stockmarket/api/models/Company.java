@@ -4,24 +4,32 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.cct.stockmarket.api.models.abstracts.AuditModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name="companies")
 public class Company extends AuditModel{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable=false, unique=true)
+	@Column(nullable=false)
 	private String name;
 	
 	@Column(nullable=false)
@@ -31,12 +39,19 @@ public class Company extends AuditModel{
 	@Column(nullable=false)
 	private Integer availableShares;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, columnDefinition="decimal(12,2)")
 	private Float sharePrice;
 	
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private SizeType type;	
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="simulation_id", nullable=false)
+	@OnDelete(action=OnDeleteAction.CASCADE)
+	@JsonIgnore()
+	private Simulation simulation;
+	
 	
 	public Company() {}
 	
@@ -55,17 +70,38 @@ public class Company extends AuditModel{
 	}
 
 	/**
+	 * @return the type
+	 */
+	public SizeType getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(SizeType type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the simulation
+	 */
+	public Simulation getSimulation() {
+		return simulation;
+	}
+
+	/**
+	 * @param simulation the simulation to set
+	 */
+	public void setSimulation(Simulation simulation) {
+		this.simulation = simulation;
+	}
+
+	/**
 	 * @return the id
 	 */
 	public Long getId() {
 		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	/**
