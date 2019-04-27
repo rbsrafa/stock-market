@@ -38,22 +38,44 @@ export default class Relatory extends Component<Props, State> {
     return (
       <React.Fragment>
         <div className='border bg-dark'>
-          <div className='border bg-white'>
+          <div
+            className='border bg-white hover rel'
+            onClick={() => this.setState({ showCWHC: !this.state.showCWHC })}
+          >
             {this._renderCompaniesWithHighestCapital()}
           </div>
-          <div className='border bg-white'>
+
+          <div
+            className='border bg-white hover rel'
+            onClick={() => this.setState({ showCWLC: !this.state.showCWLC })}
+          >
             {this._renderCompaniesWithLowestCapital()}
           </div>
-          <div className='border bg-white'>
+
+          <div
+            onClick={() => this.setState({ showIWHS: !this.state.showIWHS })}
+            className='border bg-white hover rel'>
             {this._renderInvestorsWithHeighestShares()}
           </div>
-          <div className='border bg-white'>
+
+          <div
+            onClick={() => this.setState({ showIWLS: !this.state.showIWLS })}
+            className='border bg-white hover rel'
+          >
             {this._renderInvestorsWithLowestShares()}
           </div>
-          <div className='border bg-white'>
+
+          <div
+            onClick={() => this.setState({ showIWHC: !this.state.showIWHC })}
+            className='border bg-white hover rel'
+          >
             {this._renderInvestorsWithHeighestCompanies()}
           </div>
-          <div className='border bg-white'>
+
+          <div
+            onClick={() => this.setState({ showIWLC: !this.state.showIWLC })}
+            className='border bg-white hover rel'
+          >
             {this._renderInvestorsWithLowestCompanies()}
           </div>
         </div>
@@ -63,60 +85,51 @@ export default class Relatory extends Component<Props, State> {
 
   private _renderInvestorsWithHeighestCompanies() {
     return (<div>
-      <h6
-        className='hover rel'
-        onClick={() => this.setState({ showIWHC: !this.state.showIWHC })}
-      >Investors With Highest Number of Companies
-      </h6>
+      <h6>Investors With Highest Number of Companies</h6>
 
-
-
-    </div>);
-  }
-
-  private _renderInvestorsWithLowestCompanies() {
-    return (<div>
-      <h6
-        className='hover rel'
-        onClick={() => this.setState({ showIWLC: !this.state.showIWLC })}
-      >Investors With Lowest Number of Companies
-      </h6>
-
-
-
-    </div>);
-  }
-
-  private _renderInvestorsWithHeighestShares() {
-    return (<div>
-      <h6
-        className='hover rel'
-        onClick={() => this.setState({ showIWHS: !this.state.showIWHS })}
-      >Investors With Highest Number of Shares
-      </h6>
-
-      {this.state.showIWHS ?
+      {this.state.showIWHC ?
         (
-          this.props.relatory.investorsWithHighestNumberOfShares.map((i: any) => {
-            return (
-              this._renderInvestor(i)
-            );
+          this.props.relatory.investorWithLeastNumberOfCompanies.map((i: any) => {
+            return <div>TO DO</div>
           })
         ) : <div></div>}
 
     </div>);
   }
 
+  private _renderInvestorsWithLowestCompanies() {
+    return (<div>
+      <h6>Investors With Lowest Number of Companies</h6>
+      {this.state.showIWLC ?
+        (
+          this.props.relatory.investorWithLeastNumberOfCompanies.map((i: any) => {
+            return this._renderInvestor(i);
+          })
+        ) : <div></div>}
+    </div>);
+  }
+
+  private _renderInvestorsWithHeighestShares() {
+    return (<div>
+      <h6>Investors With Highest Number of Shares</h6>
+      {this.state.showIWHS ?
+        (
+          this.props.relatory.investorsWithHighestNumberOfShares.map((i: any) => {
+            return this._renderInvestor(i);
+          })
+        ) : <div></div>}
+    </div>);
+  }
+
   private _renderInvestorsWithLowestShares() {
     return (<div>
-      <h6
-        className='hover rel'
-        onClick={() => this.setState({ showIWLS: !this.state.showIWLS })}
-      >Investors With Lowest Number of Shares
-      </h6>
-
-
-
+      <h6>Investors With Lowest Number of Shares</h6>
+      {this.state.showIWLS ?
+        (
+          this.props.relatory.investorsWithLowestNumberOfShares.map((i: any) => {
+            return this._renderInvestor(i)
+          })
+        ) : <div></div>}
     </div>);
   }
 
@@ -128,49 +141,33 @@ export default class Relatory extends Component<Props, State> {
       <span><strong>Budget: </strong>€ {i.budget}</span><br />
       <span><strong>Number of Companies: </strong>{i.numberOfCompanies}</span><br />
       <span><strong>Number of Shares: </strong>{i.numberOfShares}</span><br />
-      <span><strong>Created at:</strong> {i.createdAt}</span><br />
-      <span><strong>Updated at:</strong> {i.updatedAt}</span><br /><br />
+      <span><strong>Created at:</strong> {this._timestampConverter(i.createdAt)}</span><br />
+      <span><strong>Updated at:</strong> {this._timestampConverter(i.updatedAt)}</span><br /><br />
     </div>);
   }
 
   private _renderCompaniesWithHighestCapital() {
-    return (
-      <div>
-        <h6
-          className='hover rel'
-          onClick={() => this.setState({ showCWHC: !this.state.showCWHC })}
-        >Companies With Highest Capital</h6>
-
-        {this.state.showCWHC ?
-          (
-            this.props.relatory.companiesWithHighestCapital.map((c: any, i: any) => {
-              return (
-                this._renderCompany(c, this.props.relatory.companyHighestCapital)
-              );
-            })
-          ) : <div></div>}
-      </div>
-    )
+    return (<div>
+      <h6>Companies With Highest Capital</h6>
+      {this.state.showCWHC ?
+        (
+          this.props.relatory.companiesWithHighestCapital.map((c: any, i: any) => {
+            return this._renderCompany(c, this.props.relatory.companyHighestCapital)
+          })
+        ) : <div></div>}
+    </div>)
   }
 
   private _renderCompaniesWithLowestCapital() {
-    return (
-      <div>
-        <h6
-          className='hover rel'
-          onClick={() => this.setState({ showCWLC: !this.state.showCWLC })}
-        >Companies With Lowest Capital</h6>
-
-        {this.state.showCWLC ?
-          (
-            this.props.relatory.companiesWithLowestCapital.map((c: any, i: any) => {
-              return (
-                this._renderCompany(c, this.props.relatory.companyLowestCapital)
-              );
-            })
-          ) : <div></div>}
-      </div>
-    )
+    return (<div>
+      <h6>Companies With Lowest Capital</h6>
+      {this.state.showCWLC ?
+        (
+          this.props.relatory.companiesWithLowestCapital.map((c: any, i: any) => {
+            return this._renderCompany(c, this.props.relatory.companyLowestCapital)
+          })
+        ) : <div></div>}
+    </div>)
   }
 
   private _renderCompany(c: any, capital: any) {
@@ -182,9 +179,15 @@ export default class Relatory extends Component<Props, State> {
       <span><strong>Number of Shares:</strong> {c.numberOfShares}</span><br />
       <span><strong>Sold Shares:</strong> {c.numberOfShares - c.availableShares}</span><br />
       <span><strong>Share Price: € </strong> {c.sharePrice}</span><br />
-      <span><strong>Created at:</strong> {c.createdAt}</span><br />
-      <span><strong>Updated at:</strong> {c.updatedAt}</span><br /><br />
+      <span><strong>Created at:</strong> {this._timestampConverter(c.createdAt)}</span><br />
+      <span><strong>Updated at:</strong> {this._timestampConverter(c.updatedAt)}</span><br /><br />
     </div>);
+  }
+
+  private _timestampConverter(timestamp: string) {
+    let date = timestamp.split('T')[0];
+    let time = timestamp.split('T')[1].split('.')[0];
+    return `${date} ${time}`;
   }
 
 }

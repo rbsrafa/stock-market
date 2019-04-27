@@ -29,7 +29,7 @@ export default class SimulationView extends Component<Props, State> {
             onClick={() => this.setState({ showRelatories: !this.state.showRelatories })}
             className={className}
           >
-            <h4>Simulation id: {simulation.simulationId}</h4>
+            <h4>Simulation {simulation.simulationId}</h4>
             <h6>Number of Transactions: {simulation.numberOfTransactions}</h6>
           </div>
 
@@ -42,6 +42,6 @@ export default class SimulationView extends Component<Props, State> {
 
       </div>
     )
-    
+
   }
 }
