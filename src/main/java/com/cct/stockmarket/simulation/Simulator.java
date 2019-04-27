@@ -3,6 +3,7 @@ package com.cct.stockmarket.simulation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class Simulator {
 	private Float initialShareMax;
 	
 	private HashMap<Long, Integer> companySoldAmount;
-	private HashMap<Long, Integer> investorCompany;
+	private HashMap<Long, Set<Long>> investorCompany;
     
 	private List<Investor> investorList; 
 	private List<Company> companyList;
@@ -160,7 +161,7 @@ public class Simulator {
 				this.tradeStillPossible = false;
 				
 				this.investorList.forEach(i -> {
-					i.setNumberOfCompanies(this.investorCompany.get(i.getId()));
+					i.setNumberOfCompanies(this.investorCompany.get(i.getId()).size());
 				});
 				
 				this.simulation.setNumberOfTransactions(this.transactionList.size());
@@ -206,9 +207,13 @@ public class Simulator {
 			
 			// Keep track of investor different companies;
 			if(this.investorCompany.get(i.getId()) == null) {
-				this.investorCompany.put(i.getId(), 1);
+				Set companyIds = new HashSet();
+				companyIds.add(c.getId());
+				this.investorCompany.put(i.getId(), companyIds);
 			}else {
-				this.investorCompany.put(i.getId(), this.investorCompany.get(i.getId())+1);
+				Set<Long> companiesId = this.investorCompany.get(i.getId());
+				companiesId.add(c.getId());
+				this.investorCompany.put(i.getId(), companiesId);
 			}
 			
 			// Update mapping of companies with sold shares
