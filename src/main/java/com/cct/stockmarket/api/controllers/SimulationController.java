@@ -48,7 +48,7 @@ public class SimulationController {
 	@Autowired
 	ApplicationContext context;
 	
-        Sort sort = new Sort(new Sort.Order(Direction.ASC, "id"));
+    Sort sort = new Sort(new Sort.Order(Direction.ASC, "id"));
         
 	List<RelatoryResponse> simulationRelatories = new ArrayList();
 	
@@ -98,18 +98,33 @@ public class SimulationController {
 		System.out.println(simulationList);
 		
 		simulationList.forEach(simulation -> {
-			List<Company> companyHighestCapital = this.companies.findCompanyWithHighestCapital(simulation.getId());
-			List<Company> companyLowestCapital = this.companies.findCompanyWithLowestCapital(simulation.getId());
-                        List<Investor> investorHighestNumberShares = this.investors.findInvestorWithHighestNumberShares(simulation.getId());
-                        List<Investor> investorLowestNumberShares = this.investors.findInvestorWithLowestNumberShares(simulation.getId());
-                        List<Investor> investorHighestNumberCompanies = this.investors.findInvestorWithHighestNumberCompanies(simulation.getId());
-                        List<Investor> investorLowestNumberCompanies = this.investors.findInvestorWithLowestNumberCompanies(simulation.getId());
-                        float highestCapital = companyHighestCapital.get(0).getSharePrice() * 
-                                companyHighestCapital.get(0).getNumberOfShares();
-                        float lowestCapital = companyLowestCapital.get(0).getSharePrice() * 
-                                companyLowestCapital.get(0).getNumberOfShares();
+			
+			List<Company> companyHighestCapital = 
+				this.companies.findCompanyWithHighestCapital(simulation.getId());
+			
+			List<Company> companyLowestCapital = 
+				this.companies.findCompanyWithLowestCapital(simulation.getId());
+			
+            List<Investor> investorHighestNumberShares = 
+            	this.investors.findInvestorWithHighestNumberShares(simulation.getId());
+            
+            List<Investor> investorLowestNumberShares = 
+            	this.investors.findInvestorWithLowestNumberShares(simulation.getId());
+            
+            List<Investor> investorHighestNumberCompanies = 
+            	this.investors.findInvestorWithHighestNumberCompanies(simulation.getId());
+            
+            List<Investor> investorLowestNumberCompanies = 
+            	this.investors.findInvestorWithLowestNumberCompanies(simulation.getId());
+            
+            float highestCapital = companyHighestCapital.get(0).getSharePrice() * 
+                companyHighestCapital.get(0).getNumberOfShares();
+            
+            float lowestCapital = companyLowestCapital.get(0).getSharePrice() * 
+                companyLowestCapital.get(0).getNumberOfShares();
                         
-                        RelatoryResponse response = new RelatoryResponse();
+            
+            RelatoryResponse response = new RelatoryResponse();
 			response.setSimulationId(simulation.getId());
 			response.setNumberOfTransactions(simulation.getNumberOfTransactions());
 			response.setCompanyHighestCapital(highestCapital);
@@ -121,7 +136,7 @@ public class SimulationController {
 			response.setInvestorWithLeastNumberOfCompanies(investorHighestNumberCompanies);
 			response.setInvestorWithLeastNumberOfCompanies(investorLowestNumberCompanies);
                         
-                        this.simulationRelatories.add(response);
+            this.simulationRelatories.add(response);
 		});
 		
 		return this.simulationRelatories;
@@ -131,31 +146,44 @@ public class SimulationController {
 	public RelatoryResponse getRelatoryBySimulationId(
 		@PathVariable Long id
 	) {
-            
-                System.out.println("BEFORE TESTEEEE!!!!  ");
-		Simulation simulation = this.simulations.getOne(id);
-                List<Company> companyHighestCapital = this.companies.findCompanyWithHighestCapital(simulation.getId());
-                List<Company> companyLowestCapital = this.companies.findCompanyWithLowestCapital(simulation.getId());
-                List<Investor> investorHighestNumberShares = this.investors.findInvestorWithHighestNumberShares(simulation.getId());
-                List<Investor> investorLowestNumberShares = this.investors.findInvestorWithLowestNumberShares(simulation.getId());
-                List<Investor> investorHighestNumberCompanies = this.investors.findInvestorWithHighestNumberCompanies(simulation.getId());
-                List<Investor> investorLowestNumberCompanies = this.investors.findInvestorWithLowestNumberCompanies(simulation.getId());
-                float highestCapital = companyHighestCapital.get(0).getSharePrice() * 
-                        companyHighestCapital.get(0).getNumberOfShares();
-                float lowestCapital = companyLowestCapital.get(0).getSharePrice() * 
-                        companyLowestCapital.get(0).getNumberOfShares();
 
-                RelatoryResponse response = new RelatoryResponse();
-                response.setSimulationId(simulation.getId());
-                response.setNumberOfTransactions(simulation.getNumberOfTransactions());
-                response.setCompanyHighestCapital(highestCapital);
-                response.setCompaniesWithHighestCapital(companyHighestCapital);
-                response.setCompanyLowestCapital(lowestCapital);
-                response.setCompaniesWithLowestCapital(companyLowestCapital);
-                response.setInvestorsWithHighestNumberOfShares(investorHighestNumberShares);
-                response.setInvestorsWithLowestNumberOfShares(investorLowestNumberShares);
-                response.setInvestorWithLeastNumberOfCompanies(investorHighestNumberCompanies);
-                response.setInvestorWithLeastNumberOfCompanies(investorLowestNumberCompanies);
+		Simulation simulation = this.simulations.getOne(id);
+		
+        List<Company> companyHighestCapital = 
+        	this.companies.findCompanyWithHighestCapital(simulation.getId());
+        
+        List<Company> companyLowestCapital = 
+        	this.companies.findCompanyWithLowestCapital(simulation.getId());
+        
+        List<Investor> investorHighestNumberShares = 
+        	this.investors.findInvestorWithHighestNumberShares(simulation.getId());
+        
+        List<Investor> investorLowestNumberShares = 
+        	this.investors.findInvestorWithLowestNumberShares(simulation.getId());
+        
+        List<Investor> investorHighestNumberCompanies = 
+        	this.investors.findInvestorWithHighestNumberCompanies(simulation.getId());
+        
+        List<Investor> investorLowestNumberCompanies = 
+        	this.investors.findInvestorWithLowestNumberCompanies(simulation.getId());
+        
+        float highestCapital = companyHighestCapital.get(0).getSharePrice() * 
+            companyHighestCapital.get(0).getNumberOfShares();
+        
+        float lowestCapital = companyLowestCapital.get(0).getSharePrice() * 
+            companyLowestCapital.get(0).getNumberOfShares();
+
+        RelatoryResponse response = new RelatoryResponse();
+        response.setSimulationId(simulation.getId());
+        response.setNumberOfTransactions(simulation.getNumberOfTransactions());
+        response.setCompanyHighestCapital(highestCapital);
+        response.setCompaniesWithHighestCapital(companyHighestCapital);
+        response.setCompanyLowestCapital(lowestCapital);
+        response.setCompaniesWithLowestCapital(companyLowestCapital);
+        response.setInvestorsWithHighestNumberOfShares(investorHighestNumberShares);
+        response.setInvestorsWithLowestNumberOfShares(investorLowestNumberShares);
+        response.setInvestorWithLeastNumberOfCompanies(investorHighestNumberCompanies);
+        response.setInvestorWithLeastNumberOfCompanies(investorLowestNumberCompanies);
 		
 		return response;
 	}
