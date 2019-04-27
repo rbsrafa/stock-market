@@ -133,7 +133,7 @@ public class SimulationController {
 			response.setCompaniesWithLowestCapital(companyLowestCapital);
 			response.setInvestorsWithHighestNumberOfShares(investorHighestNumberShares);
 			response.setInvestorsWithLowestNumberOfShares(investorLowestNumberShares);
-			response.setInvestorWithLeastNumberOfCompanies(investorHighestNumberCompanies);
+			response.setInvestorWithHighestNumberOfCompanies(investorHighestNumberCompanies);
 			response.setInvestorWithLeastNumberOfCompanies(investorLowestNumberCompanies);
                         
             this.simulationRelatories.add(response);

@@ -34,5 +34,7 @@ export async function getSimulations() {
       }
     }
   );
-  return await res.json();
+  const json = await res.json();
+  json.sort((a:any, b:any) => (b.simulationId - a.simulationId));
+  return json;
 }

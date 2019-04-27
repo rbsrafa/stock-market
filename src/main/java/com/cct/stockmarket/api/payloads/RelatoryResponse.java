@@ -25,18 +25,15 @@ public class RelatoryResponse {
 	
 	private List<Investor> investorWithLeastNumberOfCompanies;
 	
+	private List<Investor> investorWithHighestNumberOfCompanies;
+	
 	public RelatoryResponse() {}
-	
-	
-
-
-
-
 
 	public RelatoryResponse(Long simulationId, Integer numberOfTransactions, Float companyHighestCapital,
 			List<Company> companiesWithHighestCapital, List<Company> companiesWithLowestCapital,
 			Float companyLowestCapital, List<Investor> investorsWithHighestNumberOfShares,
-			List<Investor> investorsWithLowestNumberOfShares, List<Investor> investorWithLeastNumberOfCompanies) {
+			List<Investor> investorsWithLowestNumberOfShares, List<Investor> investorWithLeastNumberOfCompanies,
+			List<Investor> investorWithHighestNumberOfCompanies) {
 		super();
 		this.simulationId = simulationId;
 		this.numberOfTransactions = numberOfTransactions;
@@ -47,8 +44,8 @@ public class RelatoryResponse {
 		this.investorsWithHighestNumberOfShares = investorsWithHighestNumberOfShares;
 		this.investorsWithLowestNumberOfShares = investorsWithLowestNumberOfShares;
 		this.investorWithLeastNumberOfCompanies = investorWithLeastNumberOfCompanies;
+		this.investorWithHighestNumberOfCompanies = investorWithHighestNumberOfCompanies;
 	}
-
 
 	/**
 	 * @return the simulationId
@@ -57,60 +54,12 @@ public class RelatoryResponse {
 		return simulationId;
 	}
 
-
-
-
-
-
-
 	/**
 	 * @param simulationId the simulationId to set
 	 */
 	public void setSimulationId(Long simulationId) {
 		this.simulationId = simulationId;
 	}
-
-
-
-
-
-
-
-	/**
-	 * @return the companyHighestCapital
-	 */
-	public Float getCompanyHighestCapital() {
-		return companyHighestCapital;
-	}
-
-
-
-	/**
-	 * @param companyHighestCapital the companyHighestCapital to set
-	 */
-	public void setCompanyHighestCapital(Float companyHighestCapital) {
-		this.companyHighestCapital = companyHighestCapital;
-	}
-
-
-
-	/**
-	 * @return the companyLowestCapital
-	 */
-	public Float getCompanyLowestCapital() {
-		return companyLowestCapital;
-	}
-
-
-
-	/**
-	 * @param companyLowestCapital the companyLowestCapital to set
-	 */
-	public void setCompanyLowestCapital(Float companyLowestCapital) {
-		this.companyLowestCapital = companyLowestCapital;
-	}
-
-
 
 	/**
 	 * @return the numberOfTransactions
@@ -124,6 +73,20 @@ public class RelatoryResponse {
 	 */
 	public void setNumberOfTransactions(Integer numberOfTransactions) {
 		this.numberOfTransactions = numberOfTransactions;
+	}
+
+	/**
+	 * @return the companyHighestCapital
+	 */
+	public Float getCompanyHighestCapital() {
+		return companyHighestCapital;
+	}
+
+	/**
+	 * @param companyHighestCapital the companyHighestCapital to set
+	 */
+	public void setCompanyHighestCapital(Float companyHighestCapital) {
+		this.companyHighestCapital = companyHighestCapital;
 	}
 
 	/**
@@ -152,6 +115,20 @@ public class RelatoryResponse {
 	 */
 	public void setCompaniesWithLowestCapital(List<Company> companiesWithLowestCapital) {
 		this.companiesWithLowestCapital = companiesWithLowestCapital;
+	}
+
+	/**
+	 * @return the companyLowestCapital
+	 */
+	public Float getCompanyLowestCapital() {
+		return companyLowestCapital;
+	}
+
+	/**
+	 * @param companyLowestCapital the companyLowestCapital to set
+	 */
+	public void setCompanyLowestCapital(Float companyLowestCapital) {
+		this.companyLowestCapital = companyLowestCapital;
 	}
 
 	/**
@@ -194,6 +171,20 @@ public class RelatoryResponse {
 	 */
 	public void setInvestorWithLeastNumberOfCompanies(List<Investor> investorWithLeastNumberOfCompanies) {
 		this.investorWithLeastNumberOfCompanies = investorWithLeastNumberOfCompanies;
+	}
+
+	/**
+	 * @return the investorWithHighestNumberOfCompanies
+	 */
+	public List<Investor> getInvestorWithHighestNumberOfCompanies() {
+		return investorWithHighestNumberOfCompanies;
+	}
+
+	/**
+	 * @param investorWithHighestNumberOfCompanies the investorWithHighestNumberOfCompanies to set
+	 */
+	public void setInvestorWithHighestNumberOfCompanies(List<Investor> investorWithHighestNumberOfCompanies) {
+		this.investorWithHighestNumberOfCompanies = investorWithHighestNumberOfCompanies;
 	}
 
 }

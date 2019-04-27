@@ -30,7 +30,7 @@ export default class Relatory extends Component<Props, State> {
     }
   }
 
-  componentDidMount() {
+  componentDidMount(){
     console.log(this.props.relatory);
   }
 
@@ -89,8 +89,8 @@ export default class Relatory extends Component<Props, State> {
 
       {this.state.showIWHC ?
         (
-          this.props.relatory.investorWithLeastNumberOfCompanies.map((i: any) => {
-            return <div>TO DO</div>
+          this.props.relatory.investorWithHighestNumberOfCompanies.map((i: any) => {
+            return this._renderInvestor(i);
           })
         ) : <div></div>}
 
@@ -138,7 +138,7 @@ export default class Relatory extends Component<Props, State> {
       <span><strong>Id:</strong> {i.id}</span><br />
       <span><strong>Investor Type: </strong>{i.type}</span><br />
       <span><strong>Name: </strong>{i.firstName} {i.lastName}</span><br />
-      <span><strong>Budget: </strong>€ {i.budget}</span><br />
+      <span><strong>Budget: </strong>€ {i.budget.toFixed(2)}</span><br />
       <span><strong>Number of Companies: </strong>{i.numberOfCompanies}</span><br />
       <span><strong>Number of Shares: </strong>{i.numberOfShares}</span><br />
       <span><strong>Created at:</strong> {this._timestampConverter(i.createdAt)}</span><br />
@@ -175,10 +175,10 @@ export default class Relatory extends Component<Props, State> {
       <span><strong>Id:</strong> {c.id}</span><br />
       <span><strong>Company Type: </strong>{c.type}</span><br />
       <span><strong>Name:</strong> {c.name}</span><br />
-      <span><strong>Capital:</strong> € {capital}</span><br />
+      <span><strong>Capital:</strong> € {capital.toFixed(2)}</span><br />
       <span><strong>Number of Shares:</strong> {c.numberOfShares}</span><br />
       <span><strong>Sold Shares:</strong> {c.numberOfShares - c.availableShares}</span><br />
-      <span><strong>Share Price: € </strong> {c.sharePrice}</span><br />
+      <span><strong>Share Price: </strong>€ {c.sharePrice.toFixed(2)}</span><br />
       <span><strong>Created at:</strong> {this._timestampConverter(c.createdAt)}</span><br />
       <span><strong>Updated at:</strong> {this._timestampConverter(c.updatedAt)}</span><br /><br />
     </div>);
