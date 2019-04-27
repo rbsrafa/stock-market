@@ -25,20 +25,18 @@ export default class SimulationView extends Component<Props, State> {
 
     return (
       <div className='mb-2'>
-          <div
-            onClick={() => this.setState({ showRelatories: !this.state.showRelatories })}
-            className={className}
-          >
-            <h4>Simulation {simulation.simulationId}</h4>
-            <h6>Number of Transactions: {simulation.numberOfTransactions}</h6>
-          </div>
+        <div
+          onClick={() => this.setState({ showRelatories: !this.state.showRelatories })}
+          className={className}
+        >
+          <h4>Simulation {simulation.simulationId}</h4>
+          <h6>Number of Transactions: {simulation.numberOfTransactions}</h6>
+        </div>
 
-          {this.state.showRelatories ?
-            (
-              <Relatory relatory={this.props.simulation}/>
-            ) :
-              <div></div>
-          }
+        {this.state.showRelatories ?
+          (
+            <Relatory relatory={this.props.simulation} />
+          ) : <div></div>}
 
       </div>
     )

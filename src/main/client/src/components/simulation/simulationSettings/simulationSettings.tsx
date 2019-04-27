@@ -116,9 +116,14 @@ export default class SimulationSettings extends Component<Props, State> {
               id="maxSharePrice"
               placeholder="100" />
           </div>
-          <label onClick={() => this.props.settings(this.state)} className="btn btn-sm btn-dark mt-2">Run</label>
+          <label onClick={() => this._handleRunClick()} className="btn btn-sm btn-dark mt-2">Run</label>
         </form>
       </div>
     )
+
+  }
+
+  private _handleRunClick() {
+    this.props.settings(this.state);
   }
 }
