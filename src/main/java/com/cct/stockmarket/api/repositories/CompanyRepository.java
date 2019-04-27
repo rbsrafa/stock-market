@@ -19,4 +19,23 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 			+ "where s.id = :id")
 	List<Company> findCompaniesBySimulation(@Param("id") Long id);
 	
+        @Query(value="SELECT * " +
+                "FROM companies c " +
+                "WHERE (c.number_of_shares * c.share_price) = " +
+                "        (SELECT max(c2.number_of_shares * c2.share_price) " +
+                "          FROM companies c2 " +
+                "          WHERE simulation_id = :simulationId " +
+                "        )",
+                nativeQuery = true)
+        List<Company> findCompanyWithHighestCapital(@Param("simulationId") Long simulationId);
+	
+        @Query(value="SELECT * " +
+                "FROM companies c " +
+                "WHERE (c.number_of_shares * c.share_price) = " +
+                "        (SELECT min(c2.number_of_shares * c2.share_price) " +
+                "          FROM companies c2 " +
+                "          WHERE simulation_id = :simulationId " +
+                "        )",
+                nativeQuery = true)
+        List<Company> findCompanyWithLowestCapital(@Param("simulationId") Long simulationId);
 }

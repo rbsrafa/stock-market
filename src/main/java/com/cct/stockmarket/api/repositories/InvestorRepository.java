@@ -20,5 +20,48 @@ public interface InvestorRepository extends JpaRepository<Investor, Long>{
 	
 	List<Investor>findByBudgetGreaterThan(Float value);
 	
+        @Query(value="SELECT * " +
+                    "FROM investors i " +
+                    "WHERE i.number_of_shares = " +
+                    "        (SELECT max(i2.number_of_shares) " +
+                    "          FROM investors i2 " +
+                    "          WHERE simulation_id = :simulationId " +
+                    "        ) " +
+                    "  AND simulation_id = :simulationId",
+                nativeQuery=true)
+        List<Investor>findInvestorWithHighestNumberShares(@Param("simulationId") Long simulationId);
+	
+        @Query(value="SELECT * " +
+                    "FROM investors i " +
+                    "WHERE i.number_of_shares = " +
+                    "        (SELECT min(i2.number_of_shares) " +
+                    "          FROM investors i2 " +
+                    "          WHERE simulation_id = :simulationId " +
+                    "        ) " +
+                    "  AND simulation_id = :simulationId",
+                nativeQuery=true)
+        List<Investor>findInvestorWithLowestNumberShares(@Param("simulationId") Long simulationId);
+	
+        @Query(value="SELECT * " +
+                    "FROM investors i " +
+                    "WHERE i.number_of_companies = " +
+                    "        (SELECT max(i2.number_of_companies) " +
+                    "          FROM investors i2 " +
+                    "          WHERE simulation_id = :simulationId " +
+                    "        ) " +
+                    "  AND simulation_id = :simulationId",
+                nativeQuery=true)
+        List<Investor>findInvestorWithHighestNumberCompanies(@Param("simulationId") Long simulationId);
+	
+        @Query(value="SELECT * " +
+                    "FROM investors i " +
+                    "WHERE i.number_of_companies = " +
+                    "        (SELECT min(i2.number_of_companies) " +
+                    "          FROM investors i2 " +
+                    "          WHERE simulation_id = :simulationId " +
+                    "        ) " +
+                    "  AND simulation_id = :simulationId",
+                nativeQuery=true)
+        List<Investor>findInvestorWithLowestNumberCompanies(@Param("simulationId") Long simulationId);
 	
 }
