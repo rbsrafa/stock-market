@@ -26,6 +26,7 @@ export default class App extends Component<Props, State> {
 
   async componentDidMount() {
     const simulations = await getSimulations();
+    console.log(simulations);
     if (simulations.length > 0) {
       this.setState({ simulations });
     }
@@ -40,7 +41,7 @@ export default class App extends Component<Props, State> {
     return (
       <React.Fragment>
         <Navbar />
-        <div className="container-fluid">
+        <div className="container-fluid pt-3">
           <div className="row hei">
             <div className="col-4 col-sm-3 col-md-3 col-lg-2  p-1">
               <SimulationSettings
@@ -85,6 +86,7 @@ export default class App extends Component<Props, State> {
         this.state.simulations ?
           (
             <div className='container'>
+              <h5 className='text-center'>Available Simulations</h5>
               {this.state.simulations ?
                 (
                   this.state.simulations.map((s: any, i: any) => {
