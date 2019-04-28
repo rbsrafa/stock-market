@@ -209,7 +209,7 @@ public class Simulator implements ISimulator{
 			
 			// Keep track of investor different companies;
 			if(this.investorCompany.get(i.getId()) == null) {
-				Set companyIds = new HashSet();
+				Set<Long> companyIds = new HashSet<>();
 				companyIds.add(c.getId());
 				this.investorCompany.put(i.getId(), companyIds);
 			}else {
@@ -244,7 +244,7 @@ public class Simulator implements ISimulator{
 			// and reduce their share value by 2%
 			if(this.transactionList.size() % 10 == 0) {
 				// Get all companies in the simulation
-				List<Company> allCompanies = new ArrayList(this.companyList);
+				List<Company> allCompanies = new ArrayList<Company>(this.companyList);
 				
 				// For each company remove from the list the 
 				// one that has not sold any share
@@ -328,7 +328,7 @@ public class Simulator implements ISimulator{
 	private void setAvailableTradingEntities(Float minSharePrice) {
 		
 		this.availableCompanies.removeIf(company -> {
-			return company.getSharePrice() <= 0;
+			return company.getNumberOfShares() <= 0;
 		});
 		
 		this.availableInvestors.removeIf(investor -> {
