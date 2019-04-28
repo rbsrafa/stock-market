@@ -19,6 +19,8 @@ import com.cct.stockmarket.api.payloads.SimulationResponse;
 import com.cct.stockmarket.api.repositories.CompanyRepository;
 import com.cct.stockmarket.api.repositories.InvestorRepository;
 import com.cct.stockmarket.api.repositories.SimulationRepository;
+import com.cct.stockmarket.simulation.generators.CompanyGenerator;
+import com.cct.stockmarket.simulation.generators.InvestorGenerator;
 
 /**
  * 
@@ -27,16 +29,20 @@ import com.cct.stockmarket.api.repositories.SimulationRepository;
  */
 @Component
 @Scope("prototype")
-public class Simulator {
-	
+public class Simulator implements ISimulator{
+
 	@Autowired
 	private CompanyRepository companies;
+	
 	@Autowired
 	private InvestorRepository investors;
-	@Autowired 
-	SimulationRepository simulations;
 	
-	private Float initialShareMax;
+	@Autowired 
+	private SimulationRepository simulations;
+	
+	private Simulation simulation;
+	
+	private SimulatorSettings settings;
 	
 	private HashMap<Long, Integer> companySoldAmount;
 	private HashMap<Long, Set<Long>> investorCompany;
@@ -48,50 +54,55 @@ public class Simulator {
 	private List<Transaction> transactionList;
 	private List<Float> budgets;
 	private List<Float> shares;
-	private Simulation simulation;
 	
 	private boolean tradeStillPossible;
 	private boolean isMinShareBiggerThanMaxBudget;
 	
-	/**
-	 * Create a Simulator with the provided
-	 * list of investors and companies
-	 * @param investorList
-	 * @param companyList
-	 */
-	@Autowired
-	public Simulator(
-		List<Investor> investorList, 
-		List<Company> companyList
-	) {
-		this.investorList = investorList;
-		this.companyList = companyList;
+	public Simulator(SimulatorSettings settings) {
+		this.settings = settings;
 	}
 	
 	/**
 	 * Create a default Simulator
 	 */
-    public Simulator() {}
+    public Simulator() {
+
+    }
+    
+    /**
+	 * Setup the trading day simulation
+	 */
+	private void setupTradingDay() {
+		tradeStillPossible = true;
+		this.transactionList = new ArrayList<>();
+		this.companySoldAmount = new HashMap<>();
+		this.investorCompany = new HashMap<>();
+    	
+    	this.investorList = InvestorGenerator
+			.generateInvestors(
+				settings.getNumberOfInvestors(), 
+				settings.getMinBudget(), 
+				settings.getMaxBudget()
+			);
+
+		this.companyList = CompanyGenerator
+			.generateCompanies(
+				settings.getNumberOfCompanies(),
+				settings.getMaxAmmountShares(), 
+				settings.getMinAmmountShares(), 
+				settings.getMaxSharePrice(), 
+				settings.getMinSharePrice()
+			);
+	}
 	
     /**
      * Runs a simulation trading day
      */
+	@Override
 	public void runTradingDay() {
 		this.setupTradingDay();
-		this.startTradingDay();
-	}
-	
-	/**
-	 * Setup the trading day simulation
-	 */
-	private void setupTradingDay() {
-    	initialShareMax = 1000f;
-    	tradeStillPossible = true;
-    	companySoldAmount = new HashMap<>();
-    	investorCompany = new HashMap<>();
-    	this.transactionList = new ArrayList();
-    	
-    	this.simulation = this.simulations
+		
+		this.simulation = this.simulations
 			.save(new Simulation());
 		
 		this.companyList.forEach(company -> {
@@ -101,9 +112,6 @@ public class Simulator {
 		this.investorList.forEach(investor -> {
 			investor.setSimulation(this.simulation);
 		});
-		
-		// Delete all persisted rows in database
-		//this.clearTables();
 		
 		// Set initial available companies
 		this.availableCompanies = this.companies.saveAll(this.companyList);
@@ -116,13 +124,8 @@ public class Simulator {
 		
 		// Set shares maximum value
 		this.shares = new ArrayList<>();
-		this.shares.add(this.initialShareMax);
-	}
-	
-	/*
-	 * Start the trading day simulation
-	 */
-	private void startTradingDay() {
+		this.shares.add(this.settings.getMaxSharePrice());
+		
 		// While there are available investors and
 		// available companies and the trade is still
 		// possible run the trading transactions
@@ -168,7 +171,6 @@ public class Simulator {
 				this.simulations.save(this.simulation);
 				this.companies.saveAll(this.companyList);
 				this.investors.saveAll(this.investorList);
-				//this.transactions.saveAll(this.transactionList);
 			}
 			
 			// Print trading info to console
@@ -333,15 +335,6 @@ public class Simulator {
 			return investor.getBudget() < minSharePrice;
 		});
 	}
-	
-	/**
-	 * Clear all entity rows in database
-	 */
-	private void clearTables() {
-		//this.transactions.deleteAllInBatch();
-		this.companies.deleteAllInBatch();
-		this.investors.deleteAllInBatch();
-	}
 		
 	/**
 	 * Returns a random number between the provided
@@ -353,13 +346,6 @@ public class Simulator {
 	private int random(int min, int max) {
     	return (int)(Math.random() * ((max - min) + 1) + min);
     }
-	
-	
-	
-	
-	
-	
-	// Getters and Setters	
 
 	/**
 	 * @return the companies
@@ -388,33 +374,19 @@ public class Simulator {
 	public void setInvestors(InvestorRepository investors) {
 		this.investors = investors;
 	}
-//
-//	/**
-//	 * @return the transactions
-//	 */
-//	public TransactionRepository getTransactions() {
-//		return transactions;
-//	}
-//
-//	/**
-//	 * @param transactions the transactions to set
-//	 */
-//	public void setTransactions(TransactionRepository transactions) {
-//		this.transactions = transactions;
-//	}
 
 	/**
-	 * @return the initialShareMax
+	 * @return the simulations
 	 */
-	public Float getInitialShareMax() {
-		return initialShareMax;
+	public SimulationRepository getSimulations() {
+		return simulations;
 	}
 
 	/**
-	 * @param initialShareMax the initialShareMax to set
+	 * @param simulations the simulations to set
 	 */
-	public void setInitialShareMax(Float initialShareMax) {
-		this.initialShareMax = initialShareMax;
+	public void setSimulations(SimulationRepository simulations) {
+		this.simulations = simulations;
 	}
 
 	/**
@@ -429,6 +401,48 @@ public class Simulator {
 	 */
 	public void setCompanySoldAmount(HashMap<Long, Integer> companySoldAmount) {
 		this.companySoldAmount = companySoldAmount;
+	}
+
+	/**
+	 * @return the investorCompany
+	 */
+	public HashMap<Long, Set<Long>> getInvestorCompany() {
+		return investorCompany;
+	}
+
+	/**
+	 * @param investorCompany the investorCompany to set
+	 */
+	public void setInvestorCompany(HashMap<Long, Set<Long>> investorCompany) {
+		this.investorCompany = investorCompany;
+	}
+
+	/**
+	 * @return the investorList
+	 */
+	public List<Investor> getInvestorList() {
+		return investorList;
+	}
+
+	/**
+	 * @param investorList the investorList to set
+	 */
+	public void setInvestorList(List<Investor> investorList) {
+		this.investorList = investorList;
+	}
+
+	/**
+	 * @return the companyList
+	 */
+	public List<Company> getCompanyList() {
+		return companyList;
+	}
+
+	/**
+	 * @param companyList the companyList to set
+	 */
+	public void setCompanyList(List<Company> companyList) {
+		this.companyList = companyList;
 	}
 
 	/**
@@ -460,6 +474,20 @@ public class Simulator {
 	}
 
 	/**
+	 * @return the transactionList
+	 */
+	public List<Transaction> getTransactionList() {
+		return transactionList;
+	}
+
+	/**
+	 * @param transactionList the transactionList to set
+	 */
+	public void setTransactionList(List<Transaction> transactionList) {
+		this.transactionList = transactionList;
+	}
+
+	/**
 	 * @return the budgets
 	 */
 	public List<Float> getBudgets() {
@@ -485,6 +513,20 @@ public class Simulator {
 	 */
 	public void setShares(List<Float> shares) {
 		this.shares = shares;
+	}
+
+	/**
+	 * @return the simulation
+	 */
+	public Simulation getSimulation() {
+		return simulation;
+	}
+
+	/**
+	 * @param simulation the simulation to set
+	 */
+	public void setSimulation(Simulation simulation) {
+		this.simulation = simulation;
 	}
 
 	/**
@@ -515,34 +557,4 @@ public class Simulator {
 		this.isMinShareBiggerThanMaxBudget = isMinShareBiggerThanMaxBudget;
 	}
 
-	/**
-	 * @return the investorList
-	 */
-	public List<Investor> getInvestorList() {
-		return investorList;
-	}
-
-	/**
-	 * @param investorList the investorList to set
-	 */
-	public void setInvestorList(List<Investor> investorList) {
-		this.investorList = investorList;
-	}
-
-	/**
-	 * @return the companyList
-	 */
-	public List<Company> getCompanyList() {
-		return companyList;
-	}
-
-	/**
-	 * @param companyList the companyList to set
-	 */
-	public void setCompanyList(List<Company> companyList) {
-		this.companyList = companyList;
-	}
-	
-	
-	
 }
