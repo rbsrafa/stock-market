@@ -21,6 +21,8 @@ import com.cct.stockmarket.api.repositories.InvestorRepository;
 import com.cct.stockmarket.api.repositories.SimulationRepository;
 import com.cct.stockmarket.simulation.generators.CompanyGenerator;
 import com.cct.stockmarket.simulation.generators.InvestorGenerator;
+import com.cct.stockmarket.simulation.iterators.investor.InvestorCollection;
+import com.cct.stockmarket.simulation.iterators.investor.InvestorIteratorInterface;
 
 /**
  * 
@@ -49,7 +51,9 @@ public class Simulator implements ISimulator{
     
 	private List<Investor> investorList; 
 	private List<Company> companyList;
-	private List<Investor> availableInvestors;
+	
+	private InvestorCollection availableInvestors2;
+	
 	private List<Company> availableCompanies;
 	private List<Transaction> transactionList;
 	private List<Float> budgets;
@@ -117,8 +121,9 @@ public class Simulator implements ISimulator{
 		this.availableCompanies = this.companies.saveAll(this.companyList);
     	
 		// Set initial available investors
-		this.availableInvestors = this.investors.saveAll(this.investorList);
-		
+		//this.availableInvestors = this.investors.saveAll(this.investorList);
+		this.availableInvestors2 = new InvestorCollection(this.investors.saveAll(this.investorList));
+
 		// Set available entities for trading
 		this.setAvailableTradingEntities(0f);
 		
@@ -130,7 +135,7 @@ public class Simulator implements ISimulator{
 		// available companies and the trade is still
 		// possible run the trading transactions
 		while(
-			availableInvestors.size() > 0 && 
+			availableInvestors2.size() > 0 && 
 			availableCompanies.size() > 0 &&
 			tradeStillPossible
 		) {
@@ -183,8 +188,8 @@ public class Simulator implements ISimulator{
 	 */
 	private void makeTransaction() {
 		// Choose a random investor from list of possible investors
-		Investor i = availableInvestors.get(random(0,availableInvestors.size()-1));
-		
+		Investor i = this.availableInvestors2.get(random(0,availableInvestors2.size()-1));
+
 		// Choose a random company from list of possible companies
 		Company c = availableCompanies.get(random(0, availableCompanies.size() -1));
 		
@@ -274,9 +279,10 @@ public class Simulator implements ISimulator{
 		
 		// For each available investor add its
 		// budget to list
-		availableInvestors.forEach(i -> {
-			budgets.add(i.getBudget());
-		});
+		InvestorIteratorInterface iterator = this.availableInvestors2.iterator();
+		while(iterator.hasNext()) {
+			budgets.add(iterator.next().getBudget());
+		}
 	}
 	
 	private void updateShareList() {
@@ -331,9 +337,13 @@ public class Simulator implements ISimulator{
 			return company.getNumberOfShares() <= 0;
 		});
 		
-		this.availableInvestors.removeIf(investor -> {
-			return investor.getBudget() < minSharePrice;
-		});
+		InvestorIteratorInterface iterator = this.availableInvestors2.iterator();
+		while(iterator.hasNext()) {
+			Investor i = iterator.next();
+			if(i.getBudget() < minSharePrice) {
+				this.availableInvestors2.remove(i);
+			}
+		}
 	}
 		
 	/**
@@ -443,20 +453,6 @@ public class Simulator implements ISimulator{
 	 */
 	public void setCompanyList(List<Company> companyList) {
 		this.companyList = companyList;
-	}
-
-	/**
-	 * @return the availableInvestors
-	 */
-	public List<Investor> getAvailableInvestors() {
-		return availableInvestors;
-	}
-
-	/**
-	 * @param availableInvestors the availableInvestors to set
-	 */
-	public void setAvailableInvestors(List<Investor> availableInvestors) {
-		this.availableInvestors = availableInvestors;
 	}
 
 	/**
