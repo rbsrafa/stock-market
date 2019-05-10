@@ -30,7 +30,6 @@ public abstract class CompanyGenerator {
         
         for(int i = 0; i < n; i++){
             numberOfShares[i] = (int)randomNumberGenerator(minShare, maxShare);
-            
             Company.CompanyBuilder tempBuilder = new Company.CompanyBuilder(
                     "test CO."+numberOfShares[i]+i, 
                     numberOfShares[i], 
