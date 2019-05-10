@@ -53,20 +53,14 @@ public class Company extends AuditModel{
 	private Simulation simulation;
 	
 	
-	public Company() {}
+	private Company() {}
 	
-	public Company(
-		String name, 
-		Integer numberOfShares, 
-		Integer availableShares, 
-		Float sharePrice,
-		SizeType type
-	) {
-		this.name = name;
-		this.numberOfShares = numberOfShares;
-		this.availableShares = availableShares;
-		this.sharePrice = sharePrice;
-		this.type = type;
+	private Company(CompanyBuilder company) {
+		this.name = company.name;
+		this.numberOfShares = company.numberOfShares;
+		this.availableShares = company.availableShares;
+		this.sharePrice = company.sharePrice;
+		this.type = company.type;
 	}
 
 	/**
@@ -74,13 +68,6 @@ public class Company extends AuditModel{
 	 */
 	public SizeType getType() {
 		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(SizeType type) {
-		this.type = type;
 	}
 
 	/**
@@ -112,24 +99,10 @@ public class Company extends AuditModel{
 	}
 
 	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
 	 * @return the numberOfShares
 	 */
 	public Integer getNumberOfShares() {
 		return numberOfShares;
-	}
-
-	/**
-	 * @param numberOfShares the numberOfShares to set
-	 */
-	public void setNumberOfShares(Integer numberOfShares) {
-		this.numberOfShares = numberOfShares;
 	}
 
 	/**
@@ -170,7 +143,60 @@ public class Company extends AuditModel{
 				+ getCreatedAt() + ", updatedAt=" + getUpdatedAt() + "]";
 	}
 
-	
+	public static class CompanyBuilder {
+        private String name;
+        private Integer numberOfShares;
+        private Integer availableShares;
+        private Float sharePrice;
+        private SizeType type;
+        
+        /**
+         * Create a new CompanyBuilder object
+         * @param name Company name
+         * @param numberOfShares initial number of shares of the Company
+         * @param availableShares initial number of available shares to be sold
+         * @param sharePrice initial price of the shares
+         * @return 
+         */
+        public CompanyBuilder(
+                String name, 
+                Integer numberOfShares, 
+                Integer availableShares, 
+                Float sharePrice
+        ) {
+            this.name = name;
+            this.numberOfShares = numberOfShares;
+            this.availableShares = availableShares;
+            this.sharePrice = sharePrice;
+            this.type = initializeType(numberOfShares);
+        }
+        
+        /**
+         * Initialize Company type based on the company's number of shares
+         * @param numberOfShares
+         * @return 
+         */
+        private SizeType initializeType(Integer numberOfShares){
+                if(numberOfShares * sharePrice <= 30000) {
+                    return SizeType.SMALL;
+                }else if(numberOfShares * sharePrice > 30000 && numberOfShares * sharePrice <= 80000){
+                    return SizeType.MEDIUM;
+                }else{
+                    return SizeType.LARGE;
+                }
+        }
+        
+        /**
+         * Build a new Company object based on the CompanyBuilder object
+         * used
+         * @return 
+         */
+        public Company build() {
+            return new Company(this);
+        }
+        
+    }
+
         
         
 }	
