@@ -54,16 +54,11 @@ public class Investor extends AuditModel{
 	
 	public Investor() {}
 	
-	public Investor(
-		Float budget,
-		String firstName,
-		String lastName,
-		SizeType type
-	) {
-		this.budget = budget;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.type = type;
+	private Investor(InvestorBuilder investor) {
+		this.budget = investor.budget;
+		this.firstName = investor.firstName;
+		this.lastName = investor.lastName;
+		this.type = investor.type;
 	}
 	
 
@@ -96,24 +91,10 @@ public class Investor extends AuditModel{
 	}
 
 	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
 	 * @return the type
 	 */
 	public SizeType getType() {
 		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(SizeType type) {
-		this.type = type;
 	}
 
 	/**
@@ -159,24 +140,10 @@ public class Investor extends AuditModel{
 	}
 
 	/**
-	 * @param firstName the firstName to set
-	 */
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	/**
 	 * @return the lastName
 	 */
 	public String getLastName() {
 		return lastName;
-	}
-
-	/**
-	 * @param lastName the lastName to set
-	 */
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
 	}
 
 	/* (non-Javadoc)
@@ -188,6 +155,55 @@ public class Investor extends AuditModel{
 				+ ", type=" + type + ", createdAt=" + getCreatedAt() + ", updatedAt=" + getUpdatedAt() + "]";
 	}
 
+        public static class InvestorBuilder {
+        private Float budget;
+        private String firstName;
+        private String lastName;
+        private SizeType type;
+        
+        /**
+     * Create a new Investor object
+     * @param budget initial value the Investor has to spend
+     * @param firstName Investor first name
+     * @param lastName Investor last name
+     * @return 
+     */
+        public InvestorBuilder(
+                Float budget,
+                String firstName,
+                String lastName
+        ) {
+            this.budget = budget;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.type = initializeType(budget);
+        }
+        
+        /**
+         * Initialize Company type based on the company's number of shares
+         * @param budget
+         * @return 
+         */
+        private SizeType initializeType(Float budget){
+                if(budget <= 4000) {
+                    return SizeType.SMALL;
+                }else if(budget > 4000 && budget <= 7000){
+                    return SizeType.MEDIUM;
+                }else{
+                    return SizeType.LARGE;
+                }
+        }
+        
+        /**
+         * Build a new Investor object based on the InvestorBuilder object
+         * used
+         * @return 
+         */
+        public Investor build() {
+            return new Investor(this);
+        }
+        
+    }
     
 
 }

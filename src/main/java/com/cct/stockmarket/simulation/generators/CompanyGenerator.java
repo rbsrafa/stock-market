@@ -6,7 +6,6 @@
 package com.cct.stockmarket.simulation.generators;
 
 import com.cct.stockmarket.api.models.Company;
-import com.cct.stockmarket.simulation.factories.CompanyFactory;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -31,13 +30,14 @@ public abstract class CompanyGenerator {
         
         for(int i = 0; i < n; i++){
             numberOfShares[i] = (int)randomNumberGenerator(minShare, maxShare);
-            companiesList.add(CompanyFactory.createCompany(
+            
+            Company.CompanyBuilder tempBuilder = new Company.CompanyBuilder(
                     "test CO."+numberOfShares[i]+i, 
                     numberOfShares[i], 
                     numberOfShares[i], 
                     randomNumberGenerator(minPrice, maxPrice)
-                )
             );
+            companiesList.add(tempBuilder.build());
         }
         System.out.println("\n" + companiesList.toString() + " \n");
         return companiesList;

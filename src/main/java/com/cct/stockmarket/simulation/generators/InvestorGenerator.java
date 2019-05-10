@@ -6,7 +6,6 @@
 package com.cct.stockmarket.simulation.generators;
 
 import com.cct.stockmarket.api.models.Investor;
-import com.cct.stockmarket.simulation.factories.InvestorFactory;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -30,12 +29,12 @@ public abstract class InvestorGenerator {
         
         for(int i = 0; i < n; i++){
             numberOfShares[i] = (int)randomNumberGenerator(maxBudget, minBudget);
-            investorsList.add(InvestorFactory.createInvestor(
+            Investor.InvestorBuilder tempBuilder = new Investor.InvestorBuilder(
                     randomNumberGenerator(maxBudget, minBudget),
                     "John"+numberOfShares[i]+i,
                     "Doe"+numberOfShares[i]+i
-                )
             );
+            investorsList.add(tempBuilder.build());
         }
         System.out.println("\n" + investorsList.toString() + " \n");
         return investorsList;
