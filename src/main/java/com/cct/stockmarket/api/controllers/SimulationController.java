@@ -23,9 +23,8 @@ import com.cct.stockmarket.api.payloads.SimulationResponse;
 import com.cct.stockmarket.api.repositories.CompanyRepository;
 import com.cct.stockmarket.api.repositories.InvestorRepository;
 import com.cct.stockmarket.api.repositories.SimulationRepository;
+import com.cct.stockmarket.simulation.SimulatorSettings;
 import com.cct.stockmarket.simulation.Simulator;
-import com.cct.stockmarket.simulation.generators.CompanyGenerator;
-import com.cct.stockmarket.simulation.generators.InvestorGenerator;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
@@ -44,6 +43,8 @@ public class SimulationController {
 	
 	@Autowired
 	InvestorRepository investors;
+	
+	SimulatorSettings settings;
 
 	@Autowired
 	ApplicationContext context;
@@ -54,38 +55,23 @@ public class SimulationController {
 	
 	
 	@PostMapping("/run")
-	public SimulationResponse runTradingDay(
-		@Valid @RequestBody SimulationRequest settings
+	public SimulationResponse runSimulation(
+		@Valid @RequestBody SimulationRequest body
 	) {
-		
-		// Generation process
-		
-		int numberOfInvestors = settings.getInvestorsQuantity();
-    	int numberOfCompanies = settings.getCompaniesQuantity();
-    	Float minBudget = (float)settings.getMinBudget();
-    	Float maxBudget = (float)settings.getMaxBudget();
-    	Float minSharePrice = settings.getMinSharePrice();
-    	Float maxSharePrice = settings.getMaxSharePrice();
-    	Integer minAmmountShares = settings.getMinAmmountShares();
-    	Integer maxAmmountShares = settings.getMaxAmmountShares();
-    	
-    	List<Investor> investorList = InvestorGenerator
-    		.generateInvestors(numberOfInvestors, minBudget, maxBudget);
-    	
-    	List<Company> companyList = CompanyGenerator
-    		.generateCompanies(
-    			numberOfCompanies, maxAmmountShares, 
-    			minAmmountShares, maxSharePrice, minSharePrice
-    		);
-    	
-    	// Simulation process
-    	
-    	Simulator simulator = context
-			.getBean(Simulator.class, investorList, companyList);
-    	
+		settings = new SimulatorSettings();
+    	settings.setNumberOfInvestors(body.getInvestorsQuantity());
+    	settings.setNumberOfCompanies(body.getCompaniesQuantity());
+    	settings.setMinBudget((float)body.getMinBudget());
+    	settings.setMaxBudget((float)body.getMaxBudget());
+    	settings.setMinSharePrice(body.getMinSharePrice());
+    	settings.setMaxSharePrice(body.getMaxSharePrice());
+    	settings.setMinAmmountShares(body.getMinAmmountShares());
+    	settings.setMaxAmmountShares(body.getMaxAmmountShares());
+
+    	Simulator simulator = 
+    		context.getBean(Simulator.class, settings);
+
     	simulator.runTradingDay();
-    	
-    	// Relatories generation process
     	
 		return simulator.getResults();
 	}
@@ -95,7 +81,8 @@ public class SimulationController {
 		this.simulationRelatories.clear();
 		
 		List<Simulation> simulationList = this.simulations.findAll(sort);
-		System.out.println(simulationList);
+		
+		
 		
 		simulationList.forEach(simulation -> {
 			
