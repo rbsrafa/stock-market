@@ -52,7 +52,7 @@ public class Investor extends AuditModel{
     @JsonIgnore()
 	private Simulation simulation;
 	
-	public Investor() {}
+	private Investor() {}
 	
 	private Investor(InvestorBuilder investor) {
 		this.budget = investor.budget;

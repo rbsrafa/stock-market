@@ -53,7 +53,7 @@ public class Company extends AuditModel{
 	private Simulation simulation;
 	
 	
-	public Company() {}
+	private Company() {}
 	
 	private Company(CompanyBuilder company) {
 		this.name = company.name;
