@@ -1,4 +1,4 @@
-# Default README.md
+# Stock Market Simulator
 
 ### Description
 A Basic stock market simulation for college assignment using Spring Boot, Jpa, Hibernate, Postgres and React.  
